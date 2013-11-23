@@ -34,3 +34,15 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+data_reading/balancedData.csv
+
+data_reading/balancedData2.csv
+
+data_reading/balancedData3.csv
+
+data_reading/balancedData4.csv
+
+data_reading/balancedData1.csv
+
+data_reading/Auth.txt
