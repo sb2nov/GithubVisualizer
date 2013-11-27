@@ -1,0 +1,39 @@
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>GitVis</title>
+  <script src='lib/d3.v3.js'></script>
+  <script src='js/gitvis.js'></script>
+  <style>
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  </style>
+</head>
+<body onload="init()"> <!-- init() method defined in coffee.js-->
+
+<!-- <div style="margin:100;">
+  <div style="display: table-cell; width: 100;">
+    <label for="xdropdown">X: </label><select id="xdropdown">
+      <option val="sales">sales</option>
+      <option val="profit">profit</option>
+    </select>
+  </div>
+  <div style="display: table-cell; width: 150;">
+    <label for="ydropdown">Y: </label><select id="ydropdown">
+      <option val="region">region</option>
+      <option val="category">category</option>
+    </select>
+  </div>
+  <div style="display: table-cell; width: 150;">
+    <button id="update" onclick="updateClicked()">Update</button>
+  </div>
+</div> -->
+
+<div id="vis"></div>
+
+</body>
+</html>
