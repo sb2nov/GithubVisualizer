@@ -80,16 +80,15 @@ function update(rawdata){
       .append("g")
       .attr("class", "cellRepo")
       .on("mouseover", function() {
-        d3.select(this)
+        d3.select(this).selectAll('rect')
           .attr("filter", "url(#outerDropShadow)")
-          .select(".background")
-          .style("stroke", "#000");
+          // .style("z-index", 1000)
+          .attr("stroke", "#000");
       })
       .on("mouseout", function() {
-        d3.select(this)
+        d3.select(this).selectAll('rect')
           .attr("filter", "")
-          .select(".background")
-          .style("stroke", "#fff");
+          .attr("stroke", "#fff");
       })
       .on("click", function() {
         d3.select(this).selectAll("text")
