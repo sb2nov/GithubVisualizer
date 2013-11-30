@@ -2,16 +2,11 @@
 <head>
   <meta charset="UTF-8">
   <title>GitVis</title>
-  <script src='lib/d3.v3.js'></script>
-  <script src='js/gitvis.js'></script>
-  <style>
-    .axis path,
-    .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
-  </style>
+  <link rel="stylesheet" href="css/gitvis.css" />
+  <script type="text/javascript" src='lib/d3.v3.js'></script>
+  <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery.poshytip.js"></script>
+  <script type="text/javascript" src='js/gitvis.js'></script>
 </head>
 <body onload="init()"> <!-- init() method defined in coffee.js-->
 
@@ -33,7 +28,17 @@
   </div>
 </div> -->
 
-<div id="vis"></div>
+<div id='button-form'>
+  <table>
+   <tr>
+        <td>Area of rectangles represents:</td>
+    <td><label><input type="radio" name="mode" class="mode-radio" value="score" id="select-score" checked>Number of lines</label></td>
+    <td><label><input type="radio" name="mode" class="mode-radio" value="comments">Number of Commits</label></td>
+       </tr>
+      </table>
+</div>
+
+<div id="treemap-div"></div>
 
 </body>
 </html>

@@ -1,0 +1,131 @@
+body {
+  padding-top: 8px;
+  font-family: 'Century Gothic',Arial,Helvetica,sans-serif;
+  font-size: 13px;
+}
+
+#logo-div a {
+  font-size: 14px;
+  color: #882E3C;
+  text-decoration: none;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom:0;
+}
+
+#credit-div {
+  margin-top: 8px;
+}
+
+.subtitle {
+  line-height: 130%;
+}
+.subtitle, #credit-div {
+  color: #999;
+  margin-bottom: 12px;
+}
+.subtitle a, #credit-div a {
+  color: #3b7c9e;
+}
+.subtitle a:hover {
+}
+
+#legend-div {
+  margin-top:8px;
+  padding-top:8px;
+  margin-bottom:4px;
+  padding-bottom:4px;
+  cursor: default;
+}
+
+#button-form {
+  margin-bottom:12px;
+  padding-bottom:2px;
+  font-size: 130%;
+  background: #eee;
+  padding-top:2px;
+}
+
+#wrap {
+  position: relative;
+  width: 1050px; 
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.node {
+  border: solid 1px white;
+  font: 9px sans-serif;
+  color: white;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+  word-wrap:break-word;
+}
+
+.wee-img {
+  width: 50px;
+  padding: 3px;
+  float:left;
+  border:none;
+
+}
+
+.node a {
+  color: white;
+  text-decoration: none;
+}
+
+.node a:hover {
+  text-decoration:underline;
+}
+
+.node:hover {
+  text-decoration:underline;
+
+}
+
+#colour-legend-svg {
+}
+
+div.tooltip {
+   position: absolute;
+   text-align: left;           
+   padding: 3px;
+   background: #eee;
+   border: 0px;      
+   border-radius: 5px;
+   pointer-events: none !important;
+   opacity: 0;
+   font-size: 11px;
+   min-width: 200px;
+   max-width: 220px;
+}
+
+.tooltip.tooltitle{
+    font-size: 14px;
+    text-align: center;
+}
+
+#tweet-div {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+}
+
+td {
+  padding-right: 20px;
+}
+
+
+svg {
+  pointer-events: none;
+}
+
+.svg-text, .svg-text2 {
+  fill: black;
+}
