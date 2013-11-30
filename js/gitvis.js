@@ -8,11 +8,32 @@ function init(){
         width = bodywidth - margin.left - margin.right,
         height = 600 - margin.top - margin.bottom;
 
-    div = d3.select("#treemap-div").append("div")
+    div = d3.select("#timeline-div").append("div")
         .style("position", "relative")
         .style("width", (width + margin.left + margin.right) + "px")
         .style("height", (height + margin.top + margin.bottom) + "px")
         .style("left", margin.left + "px")
+        .style("top", margin.top + "px");
+
+    div = d3.select("#treemap-repo-div").append("div")
+        .style("position", "relative")
+        .style("width", (width + margin.left + margin.right)/2.2 + "px")
+        .style("height", (height + margin.top + margin.bottom) + "px")
+        .style("left", margin.left + "px")
+        .style("top", margin.top + "px");
+
+    div = d3.select("#treemap-user-div").append("div")
+        .style("position", "relative")
+        .style("width", (width + margin.left + margin.right)/2.2 + "px")
+        .style("height", (height + margin.top + margin.bottom) + "px")
+        .style("left", (margin.left + width + margin.left + margin.right)/2.2) + "px")
+        .style("top", margin.top + "px");
+
+    div = d3.select("#heatmap-div").append("div")
+        .style("position", "relative")
+        .style("width", (width + margin.left + margin.right)/2.2 + "px")
+        .style("height", (height + margin.top + margin.bottom) + "px")
+        .style("left", (margin.left + width + margin.left + margin.right)/2.2) + "px")
         .style("top", margin.top + "px");
 
     tooltip_div = d3.select("body").append("div")   
