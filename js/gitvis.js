@@ -64,7 +64,7 @@ function init(){
 
     repoTreeMap = d3.layout.treemap()
         .size([(width + margin.left + margin.right)*0.5, (height + margin.top + margin.bottom)*0.5])
-        .sticky(true)
+        // .sticky(true)
         .children(function(d) { return d.values; })
         .value(function(d) { return d.values.total; })
         // .sort(function(a,b) {return a.total - b.total})
@@ -72,7 +72,7 @@ function init(){
 
     userTreeMap = d3.layout.treemap()
         .size([(width)*0.5, (height)*0.5])
-        .sticky(true)
+        // .sticky(true)
         .children(function(d) { return d.values; })
         .value(function(d) { return d.values.total; })
         // .sort(function(a,b) {return a.total - b.total})
@@ -80,6 +80,12 @@ function init(){
 
     d3.select('#select-score').property('checked', true);
 
+  update();
+
+}
+
+function update(){
+  
     d3.csv('data/balancedDataFull.csv', function(d) {
          //repo  username  type  name  timestamp additions deletions total message userURL repoURL
          return {
@@ -215,12 +221,22 @@ function draw(){
 
 
 function drawTreeMap(){
+  var nodelinkRepo;
+  if (userSelected) {
+    nodelinkRepo = repoMapDiv.datum({values: userRepoDataObj[userSelected], key:'repo_treemap'}).selectAll(".nodelink")
+        .data(repoTreeMap.nodes)
+      .enter().append("a")
+        .attr("class", "nodelink")
+        // .attr('href',function(d)  {return d.values.total ? d.key : null; })    
+  }
+  else {
+    nodelinkRepo = repoMapDiv.datum({values: repoData, key:'repo_treemap'}).selectAll(".nodelink")
+        .data(repoTreeMap.nodes)
+      .enter().append("a")
+        .attr("class", "nodelink")
+        // .attr('href',function(d)  {return d.values.total ? d.key : null; })    
+  }
 
-  var nodelinkRepo = repoMapDiv.datum({values: repoData, key:'repo_treemap'}).selectAll(".nodelink")
-      .data(repoTreeMap.nodes)
-    .enter().append("a")
-      .attr("class", "nodelink")
-      // .attr('href',function(d)  {return d.values.total ? d.key : null; })
 
   var nodeRepo = nodelinkRepo
     .append("div")
@@ -246,24 +262,32 @@ function drawTreeMap(){
                 tooltip_div.transition()      
                     .duration(200)
                     .style("opacity", 0);
+          })
+          .on("click", function(d){
+                repoSelected = d.key;
+                console.log(repoSelected);
           });
-          // .on("click", function(){
-          //       console.log()
-          // });
           
-  var nodeAnchorsRepo = nodeRepo.append("a")
-    .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
-                                                       "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
-                                                        d.key) : null ;})
-    // .attr('href',function(d)  {return d.values.total ? d.key : null; } )
-    
+  if (userSelected) {
+    var nodeAnchorsRepo = nodeRepo.append("a")
+      .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
+                                                         "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
+                                                          d.key) : null ;})
+      .attr('href',function(d)  {return d.values.total ? "https://github.com/balanced/" + d.key : null; } )
+  }
+  else{
+    var nodeAnchorsRepo = nodeRepo.append("a")
+      .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
+                                                         "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
+                                                          d.key) : null ;})
+  }
   // ---------------------------------------
     
   var nodelinkUser = userMapDiv.datum({values: userData, key:'user_treemap'}).selectAll(".nodelink")
       .data(userTreeMap.nodes)
     .enter().append("a")
       .attr("class", "nodelink")
-      .attr('href',function(d)  {return d.values.total ? d.key : null; })
+      // .attr('href',function(d)  {return d.values.total ? d.key : null; })
 
   var nodeUser = nodelinkUser
     .append("div")
@@ -289,13 +313,18 @@ function drawTreeMap(){
                 tooltip_div.transition()      
                     .duration(200)
                     .style("opacity", 0);
+          })
+          .on("click", function(d){
+                userSelected = d.key;
+                console.log(userSelected);
+                updateClicked();
           });
           
   var nodeAnchorsUser = nodeUser.append("a")
     .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
                                                        "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
                                                         d.key) : null ;})
-    .attr('href',function(d)  {return d.values.total ? d.key : null; } )
+    // .attr('href',function(d)  {return d.values.total ? d.key : null; } )
 
   // ---------------------------------------
 
@@ -319,6 +348,16 @@ function drawTreeMap(){
       .call(position);
   });
   
+}
+
+function updateClicked(){
+  $('.tooltip').remove();
+  $('#timeline-div').empty();
+  $('#treemap-repo-div').empty();
+  $('#treemap-user-div').empty();
+  $('#heatmap-div').empty();
+  setTimeout(function(){}, 1000);
+  init();
 }
 
 function position() {

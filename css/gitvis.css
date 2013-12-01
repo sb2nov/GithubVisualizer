@@ -65,6 +65,7 @@ h1 {
   position: absolute;
   text-indent: 2px;
   word-wrap:break-word;
+  cursor: pointer;
 }
 
 .wee-img {
