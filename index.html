@@ -35,14 +35,20 @@
   <div id='button-form'>
     <table>
      <tr>
-        <td>Area of rectangles represents:</td>
-         <td><label><input type="radio" name="mode" class="mode-radio" value="score" id="select-score" checked>Number of lines</label></td>
-         <td><label><input type="radio" name="mode" class="mode-radio" value="comments">Number of Commits</label></td>
+        <td>Area Represents:</td>
+         <td><label><input type="radio" name="mode" class="mode-radio" value="total" id="select-score" checked>Total</label></td>
+         <td><label><input type="radio" name="mode" class="mode-radio" value="additions">Additions</label></td>
+         <td><label><input type="radio" name="mode" class="mode-radio" value="deletions">Deletions</label></td>
+         <td><label><input type="radio" name="mode" class="mode-radio" value="commits"># Commits</label></td>
       </tr>
     </table>
-  </div>   
-  <div id="treemap-repo-div"></div>
-  <div id="treemap-user-div"></div>
+  </div>
+  <table>
+    <tr>
+      <td><div id="treemap-repo-div"></div></td>
+      <td><div id="treemap-user-div"></div></td>
+    </tr>
+  </table>
 </div>
 
 <div id="heatmap-div"></div>
