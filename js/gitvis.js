@@ -67,7 +67,6 @@ function init(){
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(function(d) { return d.values.total; })
-        // .sort(function(a,b) {return a.total - b.total})
         .round(false);
 
     userTreeMap = d3.layout.treemap()
@@ -75,7 +74,6 @@ function init(){
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(function(d) { return d.values.total; })
-        // .sort(function(a,b) {return a.total - b.total})
         .round(false);
 
     d3.select('#select-score').property('checked', true);
@@ -216,30 +214,57 @@ function formatData(error, csv) {
 }
 
 function draw(){
-  drawTreeMap();
+  if(userSelected){
+    repoDataToUse = {values: userRepoDataObj[userSelected]}
+  }
+  else{
+    repoDataToUse = {values: repoData}
+  }
+  repoDataToUse['key'] = 'repo_treemap'
+
+  if(repoSelected){
+    userDataToUse = {values: repoUserDataObj[repoSelected]}
+  }
+  else{
+    userDataToUse = {values: userData}
+  }
+  userDataToUse['key'] = 'user_treemap'
+
+  drawTreeMap(repoDataToUse, userDataToUse);
 }
 
 
-function drawTreeMap(){
-  var nodelinkRepo;
-  if (userSelected) {
-    nodelinkRepo = repoMapDiv.datum({values: userRepoDataObj[userSelected], key:'repo_treemap'}).selectAll(".nodelink")
-        .data(repoTreeMap.nodes)
-      .enter().append("a")
-        .attr("class", "nodelink")
-        // .attr('href',function(d)  {return d.values.total ? d.key : null; })    
-  }
-  else {
-    nodelinkRepo = repoMapDiv.datum({values: repoData, key:'repo_treemap'}).selectAll(".nodelink")
-        .data(repoTreeMap.nodes)
-      .enter().append("a")
-        .attr("class", "nodelink")
-        // .attr('href',function(d)  {return d.values.total ? d.key : null; })    
-  }
+function drawTreeMap(repoDataToUse, userDataToUse){
 
+  // console.log(repoDataToUse)
+  // console.log(repoTreeMap.nodes(repoDataToUse))
 
-  var nodeRepo = nodelinkRepo
-    .append("div")
+  nodelinkRepo = repoMapDiv.selectAll(".nodelink")
+    .data(repoTreeMap.nodes(repoDataToUse))
+    .enter()
+      .append("a")
+      .attr("class", "nodelink")
+      .each(function(d) {
+          d3.select(this)
+            .append("div")
+            .attr("class", "node")
+            .each(function(d) {
+                d3.select(this)
+                  .append("a")
+                  .attr("class", "nodeanchor")
+            });  
+      })
+
+  repoMapDiv.selectAll(".nodelink")
+    .data(repoTreeMap.nodes(repoDataToUse))
+    .exit().remove();
+
+  nodeRepo = repoMapDiv.selectAll(".node")
+    .data(repoTreeMap.nodes(repoDataToUse))
+    .exit().remove()
+
+  nodeRepo = repoMapDiv.selectAll(".node")
+      .data(repoTreeMap.nodes(repoDataToUse))
       .attr("class", "node")
       .call(position)
       .attr("stroke", "#FFF")
@@ -265,32 +290,56 @@ function drawTreeMap(){
           })
           .on("click", function(d){
                 repoSelected = d.key;
-                console.log(repoSelected);
+                if(userSelected==null){
+                    draw();                  
+                }
           });
-          
-  if (userSelected) {
-    var nodeAnchorsRepo = nodeRepo.append("a")
-      .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
-                                                         "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
-                                                          d.key) : null ;})
-      .attr('href',function(d)  {return d.values.total ? "https://github.com/balanced/" + d.key : null; } )
-  }
-  else{
-    var nodeAnchorsRepo = nodeRepo.append("a")
-      .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
-                                                         "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
-                                                          d.key) : null ;})
-  }
-  // ---------------------------------------
-    
-  var nodelinkUser = userMapDiv.datum({values: userData, key:'user_treemap'}).selectAll(".nodelink")
-      .data(userTreeMap.nodes)
-    .enter().append("a")
-      .attr("class", "nodelink")
-      // .attr('href',function(d)  {return d.values.total ? d.key : null; })
 
-  var nodeUser = nodelinkUser
-    .append("div")
+  nodeAnchorsRepo = repoMapDiv.selectAll(".nodeanchor")
+    .data(repoTreeMap.nodes(repoDataToUse))
+    .html(function(d) { return d.values.total ? d.key : null ;})
+    .exit().remove();
+
+  if(userSelected){
+    repoMapDiv.selectAll(".nodelink")
+      .attr('href', function(d){return d.values.total ? "https://github.com/balanced/" + d.key : null;})
+      .attr('target', '_blank');
+    repoMapDiv.selectAll(".nodeanchor")
+      .attr('href', function(d){return d.values.total ? "https://github.com/balanced/" + d.key : null;})
+      .attr('target', '_blank');
+  }
+
+  // ---------------------------------------
+
+  // console.log(userDataToUse)
+  // console.log(userTreeMap.nodes(userDataToUse))
+
+  nodelinkUser = userMapDiv.selectAll(".nodelink")
+    .data(userTreeMap.nodes(userDataToUse))
+    .enter()
+    .append("a")
+    .attr("class", "nodelink")
+    .each(function(d) {
+        d3.select(this)
+          .append("div")
+          .attr("class", "node")
+          .each(function(d) {
+              d3.select(this)
+                .append("a")
+                .attr("class", "nodeanchor")
+          });  
+    })
+
+  userMapDiv.selectAll(".nodelink")
+    .data(userTreeMap.nodes(userDataToUse))
+    .exit().remove();
+
+  nodeUser = userMapDiv.selectAll(".node")
+    .data(userTreeMap.nodes(userDataToUse))
+    .exit().remove()
+
+  nodeUser = userMapDiv.selectAll(".node")
+      .data(userTreeMap.nodes(userDataToUse))
       .attr("class", "node")
       .call(position)
       .attr("stroke", "#FFF")
@@ -316,15 +365,24 @@ function drawTreeMap(){
           })
           .on("click", function(d){
                 userSelected = d.key;
-                console.log(userSelected);
-                updateClicked();
+                if(repoSelected==null){
+                  draw(); 
+                }
           });
-          
-  var nodeAnchorsUser = nodeUser.append("a")
-    .html(function(d) { return d.values.total ? (d.key =="test post please ignore" ?
-                                                       "<span style='font-size: 16px'><b>Top scoring reddit post of all time:</b></span><br> test post please ignore" :
-                                                        d.key) : null ;})
-    // .attr('href',function(d)  {return d.values.total ? d.key : null; } )
+
+  nodeAnchorsUser = userMapDiv.selectAll(".nodeanchor")
+    .data(userTreeMap.nodes(userDataToUse))
+    .html(function(d) { return d.values.total ? d.key : null ;})
+    .exit().remove();
+
+  if(repoSelected){
+    userMapDiv.selectAll(".nodelink")
+      .attr('href', function(d){return d.values.total ? "https://github.com/" + d.key : null;})
+      .attr('target', '_blank');
+    userMapDiv.selectAll(".nodeanchor")
+      .attr('href', function(d){return d.values.total ? "https://github.com/" + d.key : null;})
+      .attr('target', '_blank');
+  }
 
   // ---------------------------------------
 
@@ -336,29 +394,21 @@ function drawTreeMap(){
           : this.value === "deletions" 
               ? function(d) { return d.values.deletions; } 
               : function(d) { return d.values.count; };
+
     nodeRepo
-      .data(repoTreeMap.value(value).nodes)
+      .data(repoTreeMap.value(value).nodes(repoDataToUse))
       .transition()
-      .duration(1500)
+      .duration(500)
       .call(position);
     nodeUser
-      .data(userTreeMap.value(value).nodes)
+      .data(userTreeMap.value(value).nodes(userDataToUse))
       .transition()
       .duration(1500)
       .call(position);
   });
-  
+
 }
 
-function updateClicked(){
-  $('.tooltip').remove();
-  $('#timeline-div').empty();
-  $('#treemap-repo-div').empty();
-  $('#treemap-user-div').empty();
-  $('#heatmap-div').empty();
-  setTimeout(function(){}, 1000);
-  init();
-}
 
 function position() {
   this.style("left", function(d) { return d.x + "px"; })
