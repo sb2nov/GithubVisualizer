@@ -130,3 +130,38 @@ svg {
 .svg-text, .svg-text2 {
   fill: black;
 }
+
+svg {
+  font: 10px sans-serif;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.timeAllBar {
+  fill: steelblue;
+  fill-opacity: 0.7;
+}
+
+.timeAllBar:hover {
+  fill: brown;
+  fill-opacity: 0.7;
+}
+
+.tick{
+  z-index:10;
+}

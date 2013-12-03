@@ -7771,8 +7771,8 @@ balanced-csharp,External,-1,Open Source,2013-06-03T17:20:08Z,430,18,448,added Re
 balanced-csharp,External,-1,Open Source,2013-05-30T19:40:26Z,10,0,10,added reflection to overloaded deserialize method on Resource class,https://github.com/cieplak,https://github.com/balanced/balanced-csharp
 balanced-csharp,External,-1,Open Source,2013-05-30T19:35:06Z,180,3,183,Merge branch 'master' of github.com:balanced/balanced-csharp,https://github.com/cieplak,https://github.com/balanced/balanced-csharp
 balanced-csharp,External,-1,Open Source,2013-05-30T19:33:26Z,10,0,10,deserialize json dictionary using reflection,https://github.com/cieplak,https://github.com/balanced/balanced-csharp
-balanced-csharp,bninja,1,unknown,2013-05-29T01:47:45Z,180,3,183,card,https://github.com/bninja,https://github.com/balanced/balanced-csharp
-balanced-csharp,bninja,1,unknown,2013-05-28T21:54:41Z,3731,0,3731,init,https://github.com/bninja,https://github.com/balanced/balanced-csharp
+balanced-csharp,bninja,1,Andrew,2013-05-29T01:47:45Z,180,3,183,card,https://github.com/bninja,https://github.com/balanced/balanced-csharp
+balanced-csharp,bninja,1,Andrew,2013-05-28T21:54:41Z,3731,0,3731,init,https://github.com/bninja,https://github.com/balanced/balanced-csharp
 balanced-node,mjallday,1,Marshall Jones,2013-11-01T20:29:03Z,6,6,12,"Merge pull request #19 from mjallday/master
 
 Make routing_numbers valid for tests.",https://github.com/mjallday,https://github.com/balanced/balanced-node
