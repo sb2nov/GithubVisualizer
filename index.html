@@ -9,10 +9,6 @@
   <script type="text/javascript" src='js/gitvis.js'></script>
 </head>
 <body onload="init()"> <!-- init() method defined in coffee.js-->
-
-    <div id="timeline-div"></div>
-    <div id="timeline-brush-div"></div>
-    <div id= "treemap-div">
     <div id='button-form'>
       <table>
        <tr>
@@ -24,14 +20,18 @@
         </tr>
       </table>
     </div>
-    <table>
-      <tr>
-        <td><div id="treemap-repo-div"></div></td>
-        <td><div id="treemap-user-div"></div></td>
-      </tr>
-    </table>
+    <div id="timeline-div"></div>
+    <div id="timeline-brush-div"></div>
+    <hr>
+    <div id= "treemap-div">
+      <table>
+        <tr>
+          <td><div id="treemap-repo-div"></div></td>
+          <td><div id="treemap-user-div"></div></td>
+        </tr>
+      </table>
     </div>
-
+    <hr>
     <div id="heatmap-div"></div>
 
 </body>

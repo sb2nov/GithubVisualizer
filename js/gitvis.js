@@ -1,11 +1,16 @@
 // Global variables
 var repoSelected = null;
 var userSelected = null;
-var rawdata = null;
 var firstClick = null;
 var secondClick = null;
-var choiceSelected = 'total';
+var choiceSelected = 'commits';
+
+var rawdata = null;
+var uniTimeSeries = null;
+
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
+
+// Get Choice Function
 
 function getChoice(){
     if(choiceSelected == 'total'){ return function(d) {return d.values.total;}}
@@ -18,9 +23,9 @@ function getChoice(){
 function init(){
 
     // General Initializations
-
     parsetimestamp = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
     parsedatestamp = d3.time.format("%Y-%m-%d").parse;
+    color = d3.scale.category20();
 
     margin = {top: 5, right: 5, bottom: 30, left: 50};
     windowwidth = d3.select('body').style('width').replace('px','');
@@ -130,68 +135,61 @@ function init(){
     // ----------------------------- //
     // ----------------------------- //
 
-    // repoMapDiv = d3.select("#treemap-repo-div").append("div")
-    //     .style("position", "relative")
-    //     .style("width", ((width + margin.left + margin.right)*0.4) + "px")
-    //     .style("height", ((height + margin.top + margin.bottom)*0.5) + "px")
-    //     // .style("left", margin.left + "px")
-    //     .style("top", margin.top + "px");
+    // RepoMap Initialization
+    repoMapDiv = d3.select("#treemap-repo-div")
+        .style("position", "relative")
+        .style("width", width_half + margin.left + margin.right + "px")
+        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("top", margin.top + "px");
 
-    // userMapDiv = d3.select("#treemap-user-div").append("div")
-    //     .style("position", "relative")
-    //     .style("width", width*0.4 + "px")
-    //     .style("height", (height*0.5) + "px")
-    //     .style("left", margin.left+ 150 + "px")
-    //     .style("top", margin.top + "px");
+    repoTreeMap = d3.layout.treemap()
+        .size([(width_half + margin.left + margin.right), (height_single + margin.top + margin.bottom)])
+        // .sticky(true)
+        .children(function(d) { return d.values; })
+        .value(getChoice())
+        .round(false);
 
-    // heatDiv = d3.select("#heatmap-div").append("div")
-    //     .style("position", "relative")
-    //     .style("width", (width + margin.left + margin.right) + "px")
-    //     .style("height", (height + margin.top + margin.bottom) * 0.5 + "px")
-    //     .style("left", margin.left + "px")
-    //     .style("top", margin.top + "px");
+    // ----------------------------- //
+    // ----------------------------- //
+
+    // UserMap Initialization
 
 
-    // tooltip_div = d3.select("body").append("div")   
-    //         .attr("class", "tooltip")
-    //         .attr('id', 'tooltip')
-    //         .style("visibility", "hidden");
+    // ----------------------------- //
+    // ----------------------------- //
 
-    // currentPost = "";
-
-    // d3.select(document)
-    //         .on("mousemove", function() {
-    //              var mouse_x = d3.event.pageX;
-    //              var mouse_y = d3.event.pageY;
-    //              var tooltip_width = d3.select('#tooltip').style('width').replace('px','')
-    //              tooltip_div
-    //                  .style("left", mouse_x < windowwidth-400 ? (mouse_x + 20) + "px" : (mouse_x - 20 - tooltip_width) + "px")
-    //                  .style("top", (mouse_y - 40) + "px");
-    //         });
+    // HeatMap Initialization
 
 
-    // format = d3.format("0,000");
+    // ----------------------------- //
+    // ----------------------------- //
 
-    // color = d3.scale.category20()
+    // Tooltip Initialization
+    tooltip_div = d3.select("body").append("div")   
+        .attr("class", "tooltip")
+        .attr('id', 'tooltip')
+        .style("visibility", "hidden");
 
-    // repoTreeMap = d3.layout.treemap()
-    //     .size([(width + margin.left + margin.right)*0.5, (height + margin.top + margin.bottom)*0.5])
-    //     // .sticky(true)
-    //     .children(function(d) { return d.values; })
-    //     .value(function(d) { return d.values.total; })
-    //     .round(false);
+    d3.select(document)
+        .on("mousemove", function() {
+            var mouse_x = d3.event.pageX;
+            var mouse_y = d3.event.pageY;
+            var tooltip_width = d3.select('#tooltip').style('width').replace('px','')
+            tooltip_div
+                .style("left", mouse_x < windowwidth-400 ? (mouse_x + 20) + "px" : (mouse_x - 20 - tooltip_width) + "px")
+                .style("top", (mouse_y - 40) + "px");
+        });
 
-    // userTreeMap = d3.layout.treemap()
-    //     .size([(width)*0.5, (height)*0.5])
-    //     // .sticky(true)
-    //     .children(function(d) { return d.values; })
-    //     .value(function(d) { return d.values.total; })
-    //     .round(false);
 
+    // ----------------------------- //
+    // ----------------------------- //
+
+    // Other Initialization
+    format = d3.format("0,000");
     d3.select('#select-score').property('checked', true);
 
+    // Update Page Function
     update();
-
 }
 
 function update(){
@@ -217,27 +215,82 @@ function update(){
 }
 
 
-function filterData(externVals){
-    if(!rawdata) return null;
+function filterData(extentVals){
+    if(!rawdata) {return null};
     
-    filteredData = rawdata.filter(function(d) {
-        return d.dateob > extentVals[0] && d.dateob < extentVals[1];
-    })
-    
-    filterTimeRepo = null;
-    if(!repoSelected) {
-        filterTimeRepo = filteredData.filter(function(d) {return d.repo == repoSelected;});   
-    }
+    filteredData = rawdata;
+    if(extentVals) {
+        filteredData = rawdata.filter(function(d) {
+            return d.dateob > extentVals[0] && d.dateob < extentVals[1];
+        });
+    };
 
-    filterTimeUser = null;
-    if(!userSelected){
+    filteredTimeNest = d3.nest()
+        .key(function(d) {return d.timestamp;})
+        .sortKeys(compareDates)
+        .rollup(rollLeaves)
+        .entries(filteredData);
+    
+    filterTimeRepo = filteredData;
+    filterTimeRepoNest = null;
+    if(repoSelected) {
+        filterTimeRepo = filteredData.filter(function(d) {return d.repo == repoSelected;});
+
+        filterTimeRepoNest = d3.nest()
+            .key(function(d) {return d.timestamp;})
+            .sortKeys(compareDates)
+            .rollup(rollLeaves)
+            .entries(filterTimeRepo);
+    }
+    
+    filterRepoNest = d3.nest()
+        .key(function(d) {return d.repo;})
+        .rollup(rollLeaves)
+        .entries(filterTimeRepo);
+
+    filterTimeUser = filteredData;
+    filterTimeUserNest = null;
+    if(userSelected){
         filterTimeUser = filteredData.filter(function(d) {return d.username == userSelected;});
+        
+        filterTimeUserNest = d3.nest()
+            .key(function(d) {return d.timestamp;})
+            .sortKeys(compareDates)
+            .rollup(rollLeaves)
+            .entries(filterTimeUser);
     }
     
-    if(!userSelected && !repoSelected){
-        filterTimeRepoUser = filterTimeUser.filter(function(d) {return d.repo == repoSelected;});
-    }
+    filterUserNest = d3.nest()
+        .key(function(d) {return d.username;})
+        .rollup(rollLeaves)
+        .entries(filterTimeUser);
 
+    filterTimeRepoUser = filterTimeUser;    
+    filterTimeRepoUserNest = null;
+    if(userSelected && repoSelected){
+        filterTimeRepoUser = filterTimeUser.filter(function(d) {return d.repo == repoSelected;});
+
+        filterTimeRepoUserNest = d3.nest()
+            .key(function(d) {return d.timestamp;})
+            .sortKeys(compareDates)
+            .rollup(rollLeaves)
+            .entries(filterTimeRepoUser);
+    }
+    
+    objData = new Object();
+    // TimeStamp Filters
+    objData['time'] = filteredTimeNest;
+    objData['repoTime'] = filterTimeRepoNest;
+    objData['userTime'] = filterTimeUserNest;
+    objData['userRepoTime'] = filterTimeRepoUserNest;
+
+    // Treemap Data Filters
+    objData['repo'] = filterRepoNest;
+    objData['user'] = filterUserNest;
+    
+    //Heatmap Data Filters
+    
+    return objData;
 }
 
 
@@ -245,25 +298,23 @@ function renderFunc(error, csv){
     rawdata = csv;
     console.log(rawdata[0]);
 
-    // Render TimeSeries
-    // Nest all time Data
-    timeData = d3.nest()
-        .key(function(d) {return d.timestamp;})
-        .sortKeys(compareDates)
-        .rollup(rollLeaves)
-        .entries(rawdata);
+    // Data Manipulation
+    var dataobj = filterData(null);
+    uniTimeSeries = $.extend(true, [], dataobj.time);
+    // console.log(dataobj);
 
-    // console.log(timeData);
-
-    // ----------------------------- //
-    // ----------------------------- //    
-    
-    renderTimeLine(timeData);
-    renderTimeBrush(timeData);
-
+    render_routine(dataobj);
 }
 
-function renderTimeLine(timeData){
+function render_routine(dataobj){
+    // Render Funcs
+    renderTimeLine(dataobj);
+    renderTimeBrush();
+}
+
+function renderTimeLine(dataobj){
+
+    var timeData = dataobj.time;
 
     // Scale Domain Set
     xScaleTimeLine.domain([new Date(timeData[0].key), d3.time.day.offset(new Date(timeData[timeData.length - 1].key), 1)]);
@@ -311,7 +362,7 @@ function renderTimeBrush() {
     
     // Add the svg and bar elements
     timeBrushSvgClassSelect = timeBrushSvg.selectAll('.timeBrushSvgClass')
-        .data(timeData);
+        .data(uniTimeSeries);
     
     timeBrushSvgClassSelect.exit().remove();
 
@@ -320,7 +371,7 @@ function renderTimeBrush() {
         .attr('class','timeBrushAllBar');
 
     timeBrushSvg.selectAll('.timeBrushAllBar')
-        .data(timeData)
+        .data(uniTimeSeries)
         .attr('class','timeBrushAllBar')
         .attr('x', function(d){return xScaleTimeBrush(new Date(d.key));})
         .attr("width", wTemp)
@@ -336,6 +387,12 @@ function renderTimeBrush() {
             .attr("y", -6)
             .attr("height", height_brush_div + 7);
 }
+
+
+function renderRepoMap(dataobj){
+    
+}
+
 
 function formatData(error, csv) {
 
@@ -650,16 +707,10 @@ function brushed(){
     xScaleTimeLine.domain(extentVals);
     timeSvgXaxis.transition().call(xAxisTimeLine);
 
-    filteredData = rawdata.filter(function(d) {
-        return d.dateob > extentVals[0] && d.dateob < extentVals[1];
-    })
-    filteredTimeData = d3.nest()
-        .key(function(d) {return d.timestamp;})
-        .sortKeys(compareDates)
-        .rollup(rollLeaves)
-        .entries(filteredData);
+    var dataobj = filterData(extentVals);
 
-    renderTimeLine(filteredTimeData);
+    // Render
+    renderTimeLine(dataobj);
 }
 
 function compareDates(a,b) {
