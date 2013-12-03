@@ -2,58 +2,37 @@
 <head>
   <meta charset="UTF-8">
   <title>GitVis</title>
-  <link rel="stylesheet" href="css/gitvis.css" />
+  <link rel="stylesheet" href="/css/gitvis.css" />
   <script type="text/javascript" src='lib/d3.v3.js'></script>
   <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
   <script type="text/javascript" src="js/jquery.poshytip.js"></script>
   <script type="text/javascript" src='js/gitvis.js'></script>
 </head>
 <body onload="init()"> <!-- init() method defined in coffee.js-->
-<!--   <div style="display: table-cell; width: 150;">
-    <button id="update" onclick="updateClicked()">Update</button>
-  </div> -->
-<!-- <div style="margin:100;">
-  <div style="display: table-cell; width: 100;">
-    <label for="xdropdown">X: </label><select id="xdropdown">
-      <option val="sales">sales</option>
-      <option val="profit">profit</option>
-    </select>
-  </div>
-  <div style="display: table-cell; width: 150;">
-    <label for="ydropdown">Y: </label><select id="ydropdown">
-      <option val="region">region</option>
-      <option val="category">category</option>
-    </select>
-  </div>
-  <div style="display: table-cell; width: 150;">
-    <button id="update" onclick="updateClicked()">Update</button>
-  </div>
-</div> -->
 
-
-<div id="timeline-div"></div>
-
-<div id= "treemap-div">
-  <!-- <div id='button-form'>
+    <div id="timeline-div"></div>
+    <div id="timeline-brush-div"></div>
+    <div id= "treemap-div">
+    <div id='button-form'>
+      <table>
+       <tr>
+          <td>Area Represents:</td>
+          <td><label><input type="radio" name="mode" class="mode-radio" value="commits" id="select-score" checked># Commits</label></td>
+          <td><label><input type="radio" name="mode" class="mode-radio" value="total">Total</label></td>
+          <td><label><input type="radio" name="mode" class="mode-radio" value="additions">Additions</label></td>
+          <td><label><input type="radio" name="mode" class="mode-radio" value="deletions">Deletions</label></td>
+        </tr>
+      </table>
+    </div>
     <table>
-     <tr>
-        <td>Area Represents:</td>
-        <td><label><input type="radio" name="mode" class="mode-radio" value="commits" id="select-score" checked># Commits</label></td>
-        <td><label><input type="radio" name="mode" class="mode-radio" value="total">Total</label></td>
-        <td><label><input type="radio" name="mode" class="mode-radio" value="additions">Additions</label></td>
-        <td><label><input type="radio" name="mode" class="mode-radio" value="deletions">Deletions</label></td>
+      <tr>
+        <td><div id="treemap-repo-div"></div></td>
+        <td><div id="treemap-user-div"></div></td>
       </tr>
     </table>
-  </div> -->
-  <table>
-    <tr>
-      <td><div id="treemap-repo-div"></div></td>
-      <td><div id="treemap-user-div"></div></td>
-    </tr>
-  </table>
-</div>
+    </div>
 
-<div id="heatmap-div"></div>
+    <div id="heatmap-div"></div>
 
 </body>
 </html>

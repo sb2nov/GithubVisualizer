@@ -31,8 +31,12 @@ function init(){
     // console.log(width);
     // console.log(height);
     
-    height_single = height/5;
+    height_single = height/4;
+    height_brush_div = height/16;
     width_half = 600;
+
+    // ----------------------------- //
+    // ----------------------------- //
 
     // Timeline Initializations
 
@@ -41,7 +45,7 @@ function init(){
         .style("width", width + margin.left + margin.right + "px")
         .style("height", height_single + margin.top + margin.bottom + "px")
         // .style("left", margin.left + "px")   
-        .style("margin-bottom", 5*margin.bottom + "px")
+        // .style("margin-bottom", margin.bottom + "px")
         .style("top", margin.top + "px");
 
     xScaleTimeLine = d3.time.scale()
@@ -55,13 +59,13 @@ function init(){
         .orient('bottom')
         // .ticks(d3.time.days, 1)
         // .tickFormat(d3.time.format('%a %d'))
-        .tickSize(0)
+        .tickSize(5,1)
         .tickPadding(8);
 
     yAxisTimeLine = d3.svg.axis()
         .scale(yScaleTimeLine)
         .orient('left')
-        .tickSize(0)
+        .tickSize(5,1)
         .tickPadding(8);
     
     timeSvg = timeDiv.append('svg')
@@ -77,6 +81,54 @@ function init(){
     timeSvgXaxis = timeSvg.append('svg:g')
         .attr('transform', 'translate('+ (0) +','+ height_single+')')
         .attr('class', 'axis')
+
+    // ----------------------------- //
+    // ----------------------------- //
+
+    // TimeLine Brush Initializatoin
+    timeBrushDiv = d3.select("#timeline-brush-div")
+        .style("position", "relative")
+        .style("width", width + margin.left + margin.right + "px")
+        .style("height", height_brush_div + margin.top + margin.bottom + "px")
+        .style("top", margin.top + "px");
+
+    xScaleTimeBrush = d3.time.scale()
+        .range([0, width]);
+
+    yScaleTimeBrush = d3.scale.linear()
+        .range([0, height_brush_div]);
+
+    xAxisTimeBrush = d3.svg.axis()
+        .scale(xScaleTimeBrush)
+        .orient('bottom')
+        .tickSize(5,1)
+        .tickPadding(8);
+
+    brush = d3.svg.brush()
+        .x(xScaleTimeBrush)
+        .on("brush", brushed);
+
+    timeBrushSvg = timeBrushDiv.append('svg')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height_brush_div + margin.top + margin.bottom)
+        .attr('class', 'timeBrushSvgClass')
+        .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+    timeBrushSvgXaxis = timeBrushSvg.append('svg:g')
+        .attr('transform', 'translate('+ (0) +','+ height_brush_div +')')
+        .attr('class', 'axis')
+
+    timeBrushSvgContext = timeBrushSvg.append('svg:g')
+
+    timeBrushSvgContext.append("g")
+            .attr("class", "x brush")
+        .selectAll("rect")
+            .attr("y", -6)
+            .attr("height", height_brush_div + 7);
+
+    // ----------------------------- //
+    // ----------------------------- //
 
     // repoMapDiv = d3.select("#treemap-repo-div").append("div")
     //     .style("position", "relative")
@@ -136,9 +188,9 @@ function init(){
     //     .value(function(d) { return d.values.total; })
     //     .round(false);
 
-    // d3.select('#select-score').property('checked', true);
+    d3.select('#select-score').property('checked', true);
 
-  update();
+    update();
 
 }
 
@@ -164,6 +216,31 @@ function update(){
        }, renderFunc) 
 }
 
+
+function filterData(externVals){
+    if(!rawdata) return null;
+    
+    filteredData = rawdata.filter(function(d) {
+        return d.dateob > extentVals[0] && d.dateob < extentVals[1];
+    })
+    
+    filterTimeRepo = null;
+    if(!repoSelected) {
+        filterTimeRepo = filteredData.filter(function(d) {return d.repo == repoSelected;});   
+    }
+
+    filterTimeUser = null;
+    if(!userSelected){
+        filterTimeUser = filteredData.filter(function(d) {return d.username == userSelected;});
+    }
+    
+    if(!userSelected && !repoSelected){
+        filterTimeRepoUser = filterTimeUser.filter(function(d) {return d.repo == repoSelected;});
+    }
+
+}
+
+
 function renderFunc(error, csv){
     rawdata = csv;
     console.log(rawdata[0]);
@@ -172,44 +249,92 @@ function renderFunc(error, csv){
     // Nest all time Data
     timeData = d3.nest()
         .key(function(d) {return d.timestamp;})
-        .sortKeys(function(a,b) {
-            var a_date = new Date(Date.parse(a));
-            var b_date = new Date(Date.parse(b));
-            return a_date - b_date;
-        })
-        .rollup(function(leaves) { return {"count": leaves.length, "total": d3.sum(leaves, function(d) {return parseFloat(d.total);}), "additions": d3.sum(leaves, function(d) {return parseFloat(d.additions);}), "deletions": d3.sum(leaves, function(d) {return parseFloat(d.deletions);})} })
+        .sortKeys(compareDates)
+        .rollup(rollLeaves)
         .entries(rawdata);
+
     // console.log(timeData);
+
+    // ----------------------------- //
+    // ----------------------------- //    
     
+    renderTimeLine(timeData);
+    renderTimeBrush(timeData);
+
+}
+
+function renderTimeLine(timeData){
+
     // Scale Domain Set
     xScaleTimeLine.domain([new Date(timeData[0].key), d3.time.day.offset(new Date(timeData[timeData.length - 1].key), 1)]);
     timeDataYvals = timeData.map(getChoice()).sort(d3.ascending);
     // yScaleTimeLine.domain([d3.max(timeData.map(getChoice())), 0]);
     yScaleTimeLine.domain([d3.quantile(timeDataYvals, 1.0), 0]);
-    
+
+
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClass')
-        .data(timeData);
+        .data(timeData)
+        .enter()
+            .append('svg:rect')
+            .attr('class','timeAllBar');
         
-    timeSvgClassSelect.exit().remove();
-    
-    timeSvgClassSelect.enter()
-        .append('svg:rect')
-        .attr('class','timeAllBar');
-        
-    wTemp = width / (timeData.length);
-    
+    // wTemp = width / timeData.length;
+    wTemp = width / timeStampDiff(xScaleTimeLine.domain());
+
     timeSvg.selectAll('.timeAllBar')
         .data(timeData)
+        .transition()
         .attr('class','timeAllBar')
         .attr('x', function(d){return xScaleTimeLine(new Date(d.key));})
         .attr("width", wTemp)
         .attr("y", function(d){return yScaleTimeLine(getChoice()(d));})
         .attr('height', function(d){return height_single - yScaleTimeLine(getChoice()(d));});
 
-    timeSvgYaxis.call(yAxisTimeLine);
-    timeSvgXaxis.call(xAxisTimeLine);
+    timeSvg.selectAll('.timeSvgClass')
+        .data(timeData)
+        .exit().remove();
+    
+    timeSvg.selectAll('.timeAllBar')
+        .data(timeData)
+        .exit().remove();
 
+    timeSvgYaxis.transition().call(yAxisTimeLine);
+    timeSvgXaxis.transition().call(xAxisTimeLine);
+}
+
+
+function renderTimeBrush() {
+        // Render Brush TimeSeries
+    xScaleTimeBrush.domain(xScaleTimeLine.domain());
+    yScaleTimeBrush.domain(yScaleTimeLine.domain());
+    
+    // Add the svg and bar elements
+    timeBrushSvgClassSelect = timeBrushSvg.selectAll('.timeBrushSvgClass')
+        .data(timeData);
+    
+    timeBrushSvgClassSelect.exit().remove();
+
+    timeBrushSvgClassSelect.enter()
+        .append('svg:rect')
+        .attr('class','timeBrushAllBar');
+
+    timeBrushSvg.selectAll('.timeBrushAllBar')
+        .data(timeData)
+        .attr('class','timeBrushAllBar')
+        .attr('x', function(d){return xScaleTimeBrush(new Date(d.key));})
+        .attr("width", wTemp)
+        .attr("y", function(d){return yScaleTimeBrush(getChoice()(d));})
+        .attr('height', function(d){return height_brush_div - yScaleTimeBrush(getChoice()(d));});
+
+    timeBrushSvgXaxis.call(xAxisTimeBrush);
+
+    timeBrushSvgContext
+        .selectAll('.brush')
+            .call(brush)
+        .selectAll("rect")
+            .attr("y", -6)
+            .attr("height", height_brush_div + 7);
 }
 
 function formatData(error, csv) {
@@ -340,86 +465,9 @@ function draw(){
   }
   userDataToUse['key'] = 'user_treemap'
 
-
-  drawTimeLine();
-  // drawTreeMap(repoDataToUse, userDataToUse);
+  drawTreeMap(repoDataToUse, userDataToUse);
 }
 
-
-function drawTimeLine(){
-
-    xAxis1 = d3.svg.axis().scale(xScale1).orient("bottom");
-    xAxis2 = d3.svg.axis().scale(xScale2).orient("bottom");
-    yAxis1 = d3.svg.axis().scale(yScale1).orient("left");
-    
-    brush = d3.svg.brush()
-      .x(xAxis2)
-      .on("brush", brushed);
-    
-    area = d3.svg.area()
-      .interpolate("monotone")
-      .x(function(d) { return xScale1(d.key); })
-      .y0((height + margin.top + margin.bottom) * 0.4)
-      .y1(function(d) { return yScale1(d.values.total); });
-    
-    area2 = d3.svg.area()
-      .interpolate("monotone")
-      .x(function(d) { return xScale2(d.key); })
-      .y0((height + margin.top + margin.bottom) * 0.1)
-      .y1(function(d) { return yScale2(d.values.total); });
-
-    timeline = timeDiv.append("svg")
-    timeline.append("defs").append("clipPath")
-        .attr("id", "clip")
-      .append("rect")
-        .attr("width", width)
-        .attr("height", (height + margin.top + margin.bottom) * 0.4)
-    
-    focus = timeline.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    context = timeline.append("g")
-      .attr("transform", "translate(" + margin.left + "," + ((height + margin.top + margin.bottom) * 0.4 + margin.top) + ")");
-
-    xScale1.domain(d3.extent(timeData.map(function(d){ return parsedatestamp(d.key);})));
-    yScale1.domain([0, d3.max(timeData.map(function(d) {return d.values.total;}))]);
-    xScale2.domain(xScale1.domain());
-    yScale2.domain(yScale1.domain());
-    
-
-    focus.append("path")
-      .data(timeData)
-      .attr("clip-path", "url(#clip)")
-      .attr("d", area);
-
-    focus.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + ((height + margin.top + margin.bottom) * 0.4) + ")")
-        .call(xAxis1);
-
-    focus.append("g")
-        .attr("class", "y axis")
-        .call(yAxis1);
-
-    console.log(focus)
-
-    context.append("path")
-        .data(timeData)
-        .attr("d", area2);
-
-    context.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + ((height + margin.top + margin.bottom) * 0.1) + ")")
-        .call(xAxis2);
-
-    
-    context.append("g")
-        .attr("class", "x brush")
-        .call(brush)
-      .selectAll("rect")
-        .attr("y", -6)
-        .attr("height", ((height + margin.top + margin.bottom) * 0.1) + 7);
-}
 
 function drawTreeMap(repoDataToUse, userDataToUse){
 
@@ -598,7 +646,33 @@ function drawTreeMap(repoDataToUse, userDataToUse){
 
 
 function brushed(){
-  console.log("Brushed")
+    extentVals = brush.empty() ? xScaleTimeBrush.domain() : brush.extent();
+    xScaleTimeLine.domain(extentVals);
+    timeSvgXaxis.transition().call(xAxisTimeLine);
+
+    filteredData = rawdata.filter(function(d) {
+        return d.dateob > extentVals[0] && d.dateob < extentVals[1];
+    })
+    filteredTimeData = d3.nest()
+        .key(function(d) {return d.timestamp;})
+        .sortKeys(compareDates)
+        .rollup(rollLeaves)
+        .entries(filteredData);
+
+    renderTimeLine(filteredTimeData);
+}
+
+function compareDates(a,b) {
+            var a_date = new Date(Date.parse(a));
+            var b_date = new Date(Date.parse(b));
+            return a_date - b_date;
+}
+
+function rollLeaves(leaves) { 
+    return {"count": leaves.length, 
+            "total": d3.sum(leaves, function(d) {return parseFloat(d.total);}), 
+            "additions": d3.sum(leaves, function(d) {return parseFloat(d.additions);}), 
+            "deletions": d3.sum(leaves, function(d) {return parseFloat(d.deletions);})}
 }
 
 function position() {
@@ -606,4 +680,10 @@ function position() {
       .style("top", function(d) { return d.y + "px"; })
       .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
       .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+}
+
+function timeStampDiff(dateArray){
+    var diffInMilliseconds = dateArray[1].getTime() - dateArray[0].getTime();
+    // days
+    return Math.ceil(diffInMilliseconds / 1000 / 60 / 60 / 24);
 }

@@ -43,10 +43,13 @@ h1 {
 
 #button-form {
   margin-bottom:12px;
-  padding-bottom:2px;
-  font-size: 130%;
+  margin-top:20px;
+  font-size: 100%;
   background: #eee;
-  padding-top:2px;
+}
+
+#button-form td{
+  font-size: 13px;
 }
 
 #wrap {
@@ -68,14 +71,6 @@ h1 {
   cursor: pointer;
 }
 
-.wee-img {
-  width: 50px;
-  padding: 3px;
-  float:left;
-  border:none;
-
-}
-
 .node a {
   color: white;
   text-decoration: none;
@@ -88,9 +83,6 @@ h1 {
 .node:hover {
   text-decoration:underline;
 
-}
-
-#colour-legend-svg {
 }
 
 div.tooltip {
@@ -112,33 +104,17 @@ div.tooltip {
     text-align: center;
 }
 
-#tweet-div {
-  position: absolute;
-  top: 2px;
-  right: 0px;
-}
-
-td {
-  padding-right: 20px;
-}
-
-
 svg {
-  pointer-events: none;
+  font: 10px sans-serif;
+}
+
+path {
+  fill: steelblue;
 }
 
 .svg-text, .svg-text2 {
   fill: black;
 }
-
-svg {
-  font: 10px sans-serif;
-}
-
-.axis {
-  font: 10px sans-serif;
-}
-
 .axis path,
 .axis line {
   fill: none;
@@ -152,14 +128,25 @@ svg {
   shape-rendering: crispEdges;
 }
 
+
+.timeSvgClass{
+  z-index: 0;
+}
+
 .timeAllBar {
   fill: steelblue;
-  fill-opacity: 0.7;
+  fill-opacity: 0.8;
+  z-index: 10;
 }
 
 .timeAllBar:hover {
   fill: brown;
-  fill-opacity: 0.7;
+  fill-opacity: 0.8;
+  z-index: 10;
+};
+
+.timeBrushAllBar {
+  fill: black;
 }
 
 .tick{
