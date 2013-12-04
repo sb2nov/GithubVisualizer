@@ -166,20 +166,20 @@ path {
 }
 
 .timeSecondBar{
-  fill: #3CB371;
+  fill: #7FFFD4;
   fill-opacity: 0.8;
-  z-index: 20;
+  z-index: 30;
 }
 
 .timeSecondBar:hover {
-  fill: #20B2AA;
+  fill: #228B22;
   fill-opacity: 0.8;
-  z-index: 20;
+  z-index: 30;
 }
 
 .timeBrushAllBar {
   fill: red;
-  fill-opacity: 0.7;
+  fill-opacity: 1.0;
 }
 
 .tick{
