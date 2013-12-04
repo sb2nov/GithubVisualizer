@@ -323,8 +323,8 @@ function filterData(extentVals){
     objData = new Object();
     // TimeStamp Filters
     objData['all_timeline_data'] = allChartTimeLineNest;
-    objData['second_timeline_data'] = secondChartTimeLineNest;
-    objData['third_timeline_data'] = thirdChartTimeLineNest;
+    objData['first_timeline_data'] = secondChartTimeLineNest;
+    objData['second_timeline_data'] = thirdChartTimeLineNest;
 
     // Treemap Data Filters
     objData['repo_map_data'] = repoMapDataNest;
@@ -344,15 +344,18 @@ function renderFunc(error, csv){
     var dataobj = filterData(null);
     uniTimeSeries = $.extend(true, [], dataobj.all_timeline_data);
     console.log(dataobj);
+
     render_routine(dataobj);
+    renderTimeBrush();
 }
 
 function render_routine(dataobj){
     // Render Funcs
     renderTimeLine(dataobj);
-    renderTimeBrush();
     renderRepoMap(dataobj);
     renderUserMap(dataobj);
+    renderFirstSelection(dataobj);
+    renderSecondSelection(dataobj);
 }
 
 function renderTimeLine(dataobj){
@@ -365,7 +368,6 @@ function renderTimeLine(dataobj){
     // yScaleTimeLine.domain([d3.max(timeData.map(getChoice())), 0]);
     yScaleTimeLine.domain([d3.quantile(timeDataYvals, 1.0), 0]);
 
-
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClass')
         .data(timeData)
@@ -374,7 +376,7 @@ function renderTimeLine(dataobj){
             .attr('class','timeAllBar');
         
     // wTemp = width / timeData.length;
-    wTemp = width / timeStampDiff(xScaleTimeLine.domain());
+    var wTemp = width / timeStampDiff(xScaleTimeLine.domain());
 
     timeSvg.selectAll('.timeAllBar')
         .data(timeData)
@@ -384,6 +386,24 @@ function renderTimeLine(dataobj){
         .attr("width", wTemp)
         .attr("y", function(d){return yScaleTimeLine(getChoice()(d));})
         .attr('height', function(d){return height_single - yScaleTimeLine(getChoice()(d));});
+
+    timeSvg.selectAll('.timeAllBar')
+        .data(timeData)
+        .on("mouseover", function(d){
+            tooltip_div       
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipString(d));    
+                }
+                putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        });
 
     timeSvg.selectAll('.timeSvgClass')
         .data(timeData)
@@ -395,6 +415,7 @@ function renderTimeLine(dataobj){
 
     timeSvgYaxis.transition().call(yAxisTimeLine);
     timeSvgXaxis.transition().call(xAxisTimeLine);
+
 }
 
 
@@ -413,15 +434,18 @@ function renderTimeBrush() {
         .append('svg:rect')
         .attr('class','timeBrushAllBar');
 
+    var wTemp = width / timeStampDiff(xScaleTimeBrush.domain());
+
     timeBrushSvg.selectAll('.timeBrushAllBar')
         .data(uniTimeSeries)
+        .transition()
         .attr('class','timeBrushAllBar')
         .attr('x', function(d){return xScaleTimeBrush(new Date(d.key));})
         .attr("width", wTemp)
         .attr("y", function(d){return yScaleTimeBrush(getChoice()(d));})
         .attr('height', function(d){return height_brush_div - yScaleTimeBrush(getChoice()(d));});
 
-    timeBrushSvgXaxis.call(xAxisTimeBrush);
+    timeBrushSvgXaxis.transition().call(xAxisTimeBrush);
 
     timeBrushSvgContext
         .selectAll('.brush')
@@ -429,6 +453,110 @@ function renderTimeBrush() {
         .selectAll("rect")
             .attr("y", -6)
             .attr("height", height_brush_div + 7);
+}
+
+
+function renderFirstSelection(dataobj){
+    if(!firstClick) { return; }
+    
+    var timeData = dataobj.first_timeline_data;
+
+    // Add the svg and bar elements
+    timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassFirst')
+        .data(timeData)
+        .enter()
+            .append('svg:rect')
+            .attr('class','timeFirstBar');
+
+    // wTemp = width / timeData.length;
+    var wTemp = width / timeStampDiff(xScaleTimeLine.domain());
+
+    timeSvg.selectAll('.timeFirstBar')
+        .data(timeData)
+        .transition()
+        .attr('class','timeFirstBar')
+        .attr('x', function(d){return xScaleTimeLine(new Date(d.key));})
+        .attr("width", wTemp)
+        .attr("y", function(d){return yScaleTimeLine(getChoice()(d));})
+        .attr('height', function(d){return height_single - yScaleTimeLine(getChoice()(d));});
+
+    timeSvg.selectAll('.timeFirstBar')
+        .data(timeData)
+        .on("mouseover", function(d){
+            tooltip_div       
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipString(d));    
+                }
+                putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        });
+
+    timeSvg.selectAll('.timeSvgClassFirst')
+        .data(timeData)
+        .exit().remove();
+    
+    timeSvg.selectAll('.timeFirstBar')
+        .data(timeData)
+        .exit().remove();
+}
+
+
+function renderSecondSelection(dataobj){
+    if(!secondClick) { return; }
+    
+    var timeData = dataobj.second_timeline_data;
+
+    // Add the svg and bar elements
+    timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassSecond')
+        .data(timeData)
+        .enter()
+            .append('svg:rect')
+            .attr('class','timeSecondBar');
+
+    // wTemp = width / timeData.length;
+    var wTemp = width / timeStampDiff(xScaleTimeLine.domain());
+
+    timeSvg.selectAll('.timeSecondBar')
+        .data(timeData)
+        .transition()
+        .attr('class','timeSecondBar')
+        .attr('x', function(d){return xScaleTimeLine(new Date(d.key));})
+        .attr("width", wTemp)
+        .attr("y", function(d){return yScaleTimeLine(getChoice()(d));})
+        .attr('height', function(d){return height_single - yScaleTimeLine(getChoice()(d));});
+
+    timeSvg.selectAll('.timeSecondBar')
+        .data(timeData)
+        .on("mouseover", function(d){
+            tooltip_div       
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipString(d));    
+                }
+                putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        });
+
+    timeSvg.selectAll('.timeSvgClassSecond')
+        .data(timeData)
+        .exit().remove();
+    
+    timeSvg.selectAll('.timeSecondBar')
+        .data(timeData)
+        .exit().remove();
 }
 
 
@@ -486,11 +614,15 @@ function renderRepoMap(dataobj){
         })
         .on("click", function(d){
             repoSelected = d.key;
+            if(firstClick == 'repo' && secondClick) {return;}
+            if(!firstClick) {firstClick = 'repo';}
+            if(firstClick != 'repo') {secondClick = 'repo';}
+            brushed();
         });
 
     nodeAnchorsRepo = repoMapDiv.selectAll(".nodeanchor")
         .data(repoData)
-        .html(function(d) { return d.values.total ? d.key : null ;})
+        .html(function(d) { return d.values.total ? d.key : 'No contribution for any repository under this selection' ;})
         .exit().remove();
 }
 
@@ -549,11 +681,15 @@ function  renderUserMap(dataobj){
         })
         .on("click", function(d){
             userSelected = d.key;
+            if(firstClick == 'user' && secondClick) {return;}
+            if(!firstClick) {firstClick = 'user';}
+            if(firstClick != 'user') {secondClick = 'user';}
+            brushed();
         });
 
     nodeAnchorsUser = userMapDiv.selectAll(".nodeanchor")
         .data(userData)
-        .html(function(d) { return d.values.total ? d.key : null ;})
+        .html(function(d) { return d.values.total ? d.key : 'No contribution by any user under this selection' ;})
         .exit().remove();
 
 }
@@ -567,14 +703,12 @@ function brushed(){
     var dataobj = filterData(extentVals);
 
     // Render
-    renderTimeLine(dataobj);
-    renderRepoMap(dataobj);
-    renderUserMap(dataobj);
+    render_routine(dataobj);
 }
 
 
 function tooltipString(d){
-    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table><tr><td><b># Commits</b></td><td>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td>" + format(d.values.deletions) + "</td></tr></table></div>";
+    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
 function compareDates(a,b) {
