@@ -352,6 +352,7 @@ function render_routine(dataobj){
     renderTimeLine(dataobj);
     renderTimeBrush();
     renderRepoMap(dataobj);
+    renderUserMap(dataobj);
 }
 
 function renderTimeLine(dataobj){
@@ -470,13 +471,13 @@ function renderRepoMap(dataobj){
         .data(repoData)
         .on("mouseover", function(d){
             tooltip_div       
-                    .style("visibility", "visible")
-                    .transition().duration(150)
-                    .style("opacity", 1);
-                    var putImageInTooltip = function() {
-                        tooltip_div.html("<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table><tr><td><b># Commits</b></td><td>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td>" + format(d.values.deletions) + "</td></tr></table></div>");    
-                    }
-                    putImageInTooltip();
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipString(d));    
+                }
+                putImageInTooltip();
         })
         .on("mouseout",function(){
             tooltip_div.transition()      
@@ -494,6 +495,70 @@ function renderRepoMap(dataobj){
 }
 
 
+function  renderUserMap(dataobj){
+    // Usermap Render Function
+    var userData = userTreeMap.nodes(dataobj.user_map_data)
+    
+    nodelinkUser = userMapDiv.selectAll(".nodelink")
+        .data(userData)
+        .enter()
+            .append("a")
+        .attr("class", "nodelink")
+        .each(function(d) {
+            d3.select(this)
+                .append("div")
+                .attr("class", "node")
+                .each(function(d) {
+                    d3.select(this)
+                        .append("a")
+                        .attr("class", "nodeanchor")
+                    });  
+        })
+
+    userMapDiv.selectAll(".nodelink")
+        .data(userData)
+        .exit().remove();
+
+    nodeUser = userMapDiv.selectAll(".node")
+        .data(userData)
+        .exit().remove()
+
+    nodeUser = userMapDiv.selectAll(".node")
+        .data(userData)
+        .attr("class", "node")
+        .transition().call(position)
+        .attr("stroke", "#FFF")
+        .style("background", function(d) { return d.values ? color(d.key) : null; });
+
+    userMapDiv.selectAll(".node")
+        .data(userData)
+        .on("mouseover", function(d){
+            tooltip_div       
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipString(d));    
+                }
+                putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        })
+        .on("click", function(d){
+            userSelected = d.key;
+        });
+
+    nodeAnchorsUser = userMapDiv.selectAll(".nodeanchor")
+        .data(userData)
+        .html(function(d) { return d.values.total ? d.key : null ;})
+        .exit().remove();
+
+}
+
+
 function brushed(){
     extentVals = brush.empty() ? xScaleTimeBrush.domain() : brush.extent();
     xScaleTimeLine.domain(extentVals);
@@ -504,6 +569,12 @@ function brushed(){
     // Render
     renderTimeLine(dataobj);
     renderRepoMap(dataobj);
+    renderUserMap(dataobj);
+}
+
+
+function tooltipString(d){
+    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table><tr><td><b># Commits</b></td><td>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
 function compareDates(a,b) {
