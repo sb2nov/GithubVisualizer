@@ -86,20 +86,29 @@ h1 {
 
 div.tooltip {
    position: absolute;
-   text-align: left;           
+   text-align: center;           
    padding: 3px;
    background: #eee;
    border: 0px;      
    border-radius: 5px;
    pointer-events: none !important;
    opacity: 0;
-   font-size: 11px;
-   min-width: 200px;
+   font-size: 8px;
+   min-width: 100px;
    max-width: 220px;
 }
 
+div.tooltip td{
+   text-align: left;
+   font-size: 10px;
+}
+
+div.tooltip table{
+  width:100%;
+}
+
 .tooltip.tooltitle{
-    font-size: 14px;
+    font-size: 11px;
     text-align: center;
 }
 
@@ -133,19 +142,44 @@ path {
 }
 
 .timeAllBar {
-  fill: steelblue;
+  fill: SteelBlue;
   fill-opacity: 0.8;
   z-index: 10;
 }
 
 .timeAllBar:hover {
-  fill: brown;
+  fill: #483D8B;
   fill-opacity: 0.8;
   z-index: 10;
-};
+}
+
+.timeFirstBar{
+  fill: Lightpink;
+  fill-opacity: 0.8;
+  z-index: 20;
+}
+
+.timeFirstBar:hover {
+  fill: Red;
+  fill-opacity: 0.6;
+  z-index: 20;
+}
+
+.timeSecondBar{
+  fill: #3CB371;
+  fill-opacity: 0.8;
+  z-index: 20;
+}
+
+.timeSecondBar:hover {
+  fill: #20B2AA;
+  fill-opacity: 0.8;
+  z-index: 20;
+}
 
 .timeBrushAllBar {
-  fill: black;
+  fill: red;
+  fill-opacity: 0.7;
 }
 
 .tick{
