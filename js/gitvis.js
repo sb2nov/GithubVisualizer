@@ -153,7 +153,18 @@ function init(){
     // ----------------------------- //
 
     // UserMap Initialization
+    userMapDiv = d3.select("#treemap-user-div")
+        .style("position", "relative")
+        .style("width", width_half + margin.left + margin.right + "px")
+        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("top", margin.top + "px");
 
+    userTreeMap = d3.layout.treemap()
+        .size([(width_half + margin.left + margin.right), (height_single + margin.top + margin.bottom)])
+        // .sticky(true)
+        .children(function(d) { return d.values; })
+        .value(getChoice())
+        .round(false);
 
     // ----------------------------- //
     // ----------------------------- //
@@ -306,7 +317,8 @@ function filterData(extentVals){
             .entries(filterSecondClickData);
     }
 
-    
+    repoMapDataNest = {values: repoMapDataNest, key:'repoMap'};
+    userMapDataNest = {values: userMapDataNest, key:'userMap'};
     
     objData = new Object();
     // TimeStamp Filters
@@ -339,6 +351,7 @@ function render_routine(dataobj){
     // Render Funcs
     renderTimeLine(dataobj);
     renderTimeBrush();
+    renderRepoMap(dataobj);
 }
 
 function renderTimeLine(dataobj){
@@ -420,8 +433,64 @@ function renderTimeBrush() {
 
 function renderRepoMap(dataobj){
     // Repomap Render Function
-    // var repoData = repoTreeMap.nodes()
+    var repoData = repoTreeMap.nodes(dataobj.repo_map_data)
+
+    nodelinkRepo = repoMapDiv.selectAll(".nodelink")
+        .data(repoData)
+        .enter()
+            .append("a")
+        .attr("class", "nodelink")
+        .each(function(d) {
+            d3.select(this)
+                .append("div")
+                .attr("class", "node")
+                .each(function(d) {
+                    d3.select(this)
+                        .append("a")
+                        .attr("class", "nodeanchor")
+                });  
+        })
     
+    repoMapDiv.selectAll(".nodelink")
+        .data(repoData)
+        .exit().remove();
+
+    nodeRepo = repoMapDiv.selectAll(".node")
+        .data(repoData)
+        .exit().remove()
+
+    nodeRepo = repoMapDiv.selectAll(".node")
+        .data(repoData)
+        .attr("class", "node")
+        .transition().call(position)
+        .attr("stroke", "#FFF")
+        .style("background", function(d) { return d.values ? color(d.key) : null; });
+    
+    repoMapDiv.selectAll(".node")
+        .data(repoData)
+        .on("mouseover", function(d){
+            tooltip_div       
+                    .style("visibility", "visible")
+                    .transition().duration(150)
+                    .style("opacity", 1);
+                    var putImageInTooltip = function() {
+                        tooltip_div.html("<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table><tr><td><b># Commits</b></td><td>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td>" + format(d.values.deletions) + "</td></tr></table></div>");    
+                    }
+                    putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        })
+        .on("click", function(d){
+            repoSelected = d.key;
+        });
+
+    nodeAnchorsRepo = repoMapDiv.selectAll(".nodeanchor")
+        .data(repoData)
+        .html(function(d) { return d.values.total ? d.key : null ;})
+        .exit().remove();
 }
 
 
@@ -434,6 +503,7 @@ function brushed(){
 
     // Render
     renderTimeLine(dataobj);
+    renderRepoMap(dataobj);
 }
 
 function compareDates(a,b) {
