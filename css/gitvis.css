@@ -185,3 +185,8 @@ path {
 .tick{
   z-index:10;
 }
+
+#treemap-div table{
+  align: center;
+  width: 100%;
+}

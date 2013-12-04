@@ -38,7 +38,7 @@ function init(){
     
     height_single = height/4;
     height_brush_div = height/16;
-    width_half = 600;
+    width_half = width/2.1;
 
     // ----------------------------- //
     // ----------------------------- //
