@@ -198,6 +198,8 @@ function init(){
     // Other Initialization
     format = d3.format("0,000");
     d3.select('#select-score').property('checked', true);
+    d3.selectAll(".mode-radio").on("change", function() { radioUpdate(this.value);});
+
 
     // Update Page Function
     update();
@@ -562,6 +564,10 @@ function renderSecondSelection(dataobj){
 
 function renderRepoMap(dataobj){
     // Repomap Render Function
+
+    repoTreeMap
+        .value(getChoice())
+    
     var repoData = repoTreeMap.nodes(dataobj.repo_map_data)
 
     nodelinkRepo = repoMapDiv.selectAll(".nodelink")
@@ -628,6 +634,10 @@ function renderRepoMap(dataobj){
 
 
 function  renderUserMap(dataobj){
+    
+    userTreeMap
+        .value(getChoice())
+    
     // Usermap Render Function
     var userData = userTreeMap.nodes(dataobj.user_map_data)
     
@@ -695,6 +705,18 @@ function  renderUserMap(dataobj){
 }
 
 
+function radioUpdate(dataInput){
+    choiceSelected = dataInput;
+
+    var dataobj = filterData(null);
+    uniTimeSeries = $.extend(true, [], dataobj.all_timeline_data);
+    console.log(dataobj);
+
+    render_routine(dataobj);
+    renderTimeBrush();   
+}
+
+
 function brushed(){
     extentVals = brush.empty() ? xScaleTimeBrush.domain() : brush.extent();
     xScaleTimeLine.domain(extentVals);
@@ -711,11 +733,13 @@ function tooltipString(d){
     return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
+
 function compareDates(a,b) {
             var a_date = new Date(Date.parse(a));
             var b_date = new Date(Date.parse(b));
             return a_date - b_date;
 }
+
 
 function rollLeaves(leaves) { 
     return {"count": leaves.length, 
@@ -724,12 +748,14 @@ function rollLeaves(leaves) {
             "deletions": d3.sum(leaves, function(d) {return parseFloat(d.deletions);})}
 }
 
+
 function position() {
   this.style("left", function(d) { return d.x + "px"; })
       .style("top", function(d) { return d.y + "px"; })
       .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
       .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
 }
+
 
 function timeStampDiff(dateArray){
     var diffInMilliseconds = dateArray[1].getTime() - dateArray[0].getTime();
@@ -738,4 +764,3 @@ function timeStampDiff(dateArray){
 }
 
 // Done
-// By : Sourabh Bajaj
