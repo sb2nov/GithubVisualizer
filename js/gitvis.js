@@ -5,8 +5,11 @@ var firstClick = null;
 var secondClick = null;
 var choiceSelected = 'commits';
 
+// Data Variables
 var rawdata = null;
 var uniTimeSeries = null;
+var numOfDays = 0;
+var extentOfDays = [];
 
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
 
@@ -170,7 +173,11 @@ function init(){
     // ----------------------------- //
 
     // HeatMap Initialization
-
+    div = d3.select("#heatmap-div")
+        .style("position", "relative")
+        .style("width", width + margin.left + margin.right + "px")
+        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("top", margin.top + "px");
 
     // ----------------------------- //
     // ----------------------------- //
@@ -248,8 +255,16 @@ function filterData(extentVals){
         .rollup(rollLeaves)
         .entries(filteredData);
 
+    if(allChartTimeLineNest.length > 0)
+        extentOfDays = [allChartTimeLineNest[0].key, allChartTimeLineNest[allChartTimeLineNest.length-1].key];
+    else
+        extentOfDays = extentVals;
+
+    numOfDays = moment(extentOfDays[1]).diff(extentOfDays[0], 'days');
+
     repoMapDataNest = null;
     userMapDataNest = null;
+    heatMapDataNest = null;
     secondChartTimeLineNest = null;
     thirdChartTimeLineNest = null;
 
@@ -261,6 +276,13 @@ function filterData(extentVals){
             
         userMapDataNest = d3.nest()
             .key(function(d) {return d.username;})
+            .rollup(rollLeaves)
+            .entries(filteredData);
+        
+        heatMapDataNest = d3.nest()
+            .key(function(d) {return d.repo;})
+            .key(function(d) { return determineScale(d.timestamp);})
+            .sortKeys(compareDates)
             .rollup(rollLeaves)
             .entries(filteredData);
     }
@@ -333,6 +355,7 @@ function filterData(extentVals){
     objData['user_map_data'] = userMapDataNest;
     
     //Heatmap Data Filters
+    objData['heat_map_data'] = heatMapDataNest;
     
     return objData;
 }
@@ -761,6 +784,25 @@ function timeStampDiff(dateArray){
     var diffInMilliseconds = dateArray[1].getTime() - dateArray[0].getTime();
     // days
     return Math.ceil(diffInMilliseconds / 1000 / 60 / 60 / 24);
+}
+
+function determineScale(timestamp) {
+    //var startDate = moment(startDate);
+    //var endDate = moment(endDate);
+    //console.log(numOfDays);
+
+    if(numOfDays < 40) {
+        //console.log(timestamp);
+        return timestamp;
+    }
+    else if(numOfDays/7 < 40) {
+        timestamp = new Date(timestamp);
+        //console.log(d3.time.day.offset(timestamp, (-1)*timestamp.getDay()));
+        return d3.time.day.offset(timestamp, (-1) * timestamp.getDay()).toISOString().substring(0,10);
+    }
+    else {
+        return timestamp.substring(0,7) + "-01";
+    }
 }
 
 // Done
