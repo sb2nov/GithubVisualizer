@@ -17,7 +17,7 @@ var buckets = 9;
 var buckets_tree = 7;
 // var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
-var nameMapperObj = {"External": "Open Source", 
+var nameMapperObj = {"External": "External User", 
                     "atmos": "Corey Donohoe",
                     "bninja": "Andrew", 
                     "cieplak": "Patrick Cieplak",
@@ -134,6 +134,7 @@ function init(){
         .scale(yScaleTimeLine)
         .orient('left')
         .tickSize(5,1)
+        .tickFormat(d3.format('s'))
         .tickPadding(8);
     
     timeSvg = timeDiv.append('svg')
@@ -194,6 +195,13 @@ function init(){
         .selectAll("rect")
             .attr("y", -6)
             .attr("height", height_brush_div + 7);
+
+    // timeBrushSvg.append("text")
+    //     .attr("class", "x_label")
+    //     .attr("text-anchor", "middle")
+    //     .attr("x", width/2.0)
+    //     .attr("y", height_brush_div + 35)
+    //     .text("Time Axis");
 
     // ----------------------------- //
     // ----------------------------- //
