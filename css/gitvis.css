@@ -123,6 +123,7 @@ path {
 .svg-text, .svg-text2 {
   fill: black;
 }
+
 .axis path,
 .axis line {
   fill: none;
@@ -189,4 +190,16 @@ path {
 #treemap-div table{
   align: center;
   width: 100%;
+}
+
+.heatMapCell{
+  fill-opacity: 0.8;
+}
+
+.heatMapCell:hover{
+  fill-opacity: 1.0;
+}
+
+#heatmap-div{
+  margin: 0 auto;
 }
