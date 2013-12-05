@@ -19,11 +19,21 @@
   <div class="container">  
     <div class='row'>
         <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
+      <div class="navbar-inner" >
         <a class="brand" href="#" style="margin-left:10px">Github Visualization</a>
-        <ul class="nav">
-          <li><a href="#">Home</a></li>
+        <ul class="nav" style="margin-top:5px">
+          <li><button type="button" onclick="homeClicked()" class="btn btn-small">Home</button></li>
+          <a href="http://github.com/balanced" class='btn' target='_blank'><i class="icon-share"></i></a>
         </ul>
+                  
+          <div id='firstClickButtonDiv'>
+            <div class='createFirstButtons'></div>
+          </div>
+          
+          <div id='secondClickButtonDiv'>
+            <div id='createSecondButtons'></div>
+          </div>
+
         <ul class='nav pull-right'>
           <li><label class="control-label" for="selectbasic" style='margin-right: 10px; margin-top:5px;'>Main Variable : </label></li>
           <li><form style="margin-bottom: 0px">

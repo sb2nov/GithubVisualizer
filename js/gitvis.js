@@ -15,6 +15,7 @@ var heatMapPadding = 100;
 var cellLimit = 60;
 var buckets = 9;
 var buckets_tree = 7;
+var extentVals = null;
 // var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
 var nameMapperObj = {"External": "External User", 
@@ -54,6 +55,47 @@ var nameMapperObj = {"External": "External User",
                     "balanced-android": "balanced-android",
                     "status.balancedpayments.com": "status-website",
                     "balanced-ios": "balanced-ios"};
+
+
+var ReverseMapper = {
+    "Open Source":          "External",
+    "Corey Donohoe":        "atmos",
+    "Andrew":               "bninja",
+    "Patrick Cieplak":      "cieplak",
+    "Dali Zheng":           "daliwali",
+    "Jareau Wade":          "jkwade",
+    "Nick Kleinschmidt":    "kleinsch",
+    "Mahmoud Abdelkader":   "mahmoudimus",
+    "Matin Tamizi":         "matin",
+    "Matthew Francis":      "matthewfl",
+    "Matin Tamizi":         "matin",
+    "Marshall Jones":       "mjallday",
+    "Justin Keller":        "nodesocket",
+    "Parham Negahdar":      "pnegahdar",
+    "Ben Mills":            "remear",
+    "Tom Bell":             "tombell",
+    "Victor Lin":           "victorlin",
+    "dashboard":            "balanced-dashboard",
+    "balanced-docs":        "balanced-docs",
+    "main-website":         "www.balancedpayments.com",
+    "small-projects":       "small-projects",
+    "active_merchant":      "active_merchant",
+    "balanced-node":        "balanced-node",
+    "billy":                "billy",
+    "balanced-java":        "balanced-java",
+    "balanced-php":         "balanced-php",
+    "balanced-ruby":        "balanced-ruby",
+    "balanced-csharp":      "balanced-csharp",
+    "balanced-api":         "balanced-api",
+    "hubot":                "hubot",
+    "fakeredis":            "fakeredis",
+    "github-pages":         "balanced.github.com",
+    "balanced-js":          "balanced-js",
+    "balanced-python":      "balanced-python",
+    "balanced-android":     "balanced-android",
+    "status-website":       "status.balancedpayments.com",
+    "balanced-ios":          "balanced-ios"
+}
 
 // Get Choice Function
 
@@ -762,9 +804,19 @@ function renderRepoMap(dataobj){
         })
         .on("click", function(d){
             repoSelected = d.key;
-            if(firstClick == 'repo' && secondClick) {secondClick = null; }
-            if(!firstClick) {firstClick = 'repo';}
-            if(firstClick != 'repo') {secondClick = 'repo';}
+            if(firstClick == 'repo') {
+                secondClick = null;
+                d3.selectAll('.createSecondButtons').remove();
+                d3.select('#firstClickButtonDiv').html(firstButtonHTML());
+            }
+            if(!firstClick) {
+                firstClick = 'repo';
+                d3.select('#firstClickButtonDiv').html(firstButtonHTML());
+            }
+            if(firstClick != 'repo') {
+                secondClick = 'repo';
+                d3.select('#secondClickButtonDiv').html(secondButtonHTML());
+            }
             brushed();
         });
 
@@ -837,11 +889,19 @@ function  renderUserMap(dataobj){
         })
         .on("click", function(d){
             userSelected = d.key;
-            if(firstClick == 'user' && secondClick) {
+            if(firstClick == 'user') {
                 secondClick = null;
+                d3.selectAll('.createSecondButtons').remove();
+                d3.select('#firstClickButtonDiv').html(firstButtonHTML());
             }
-            if(!firstClick) {firstClick = 'user';}
-            if(firstClick != 'user') {secondClick = 'user';}
+            if(!firstClick) {
+                firstClick = 'user';
+                d3.select('#firstClickButtonDiv').html(firstButtonHTML());
+            }
+            if(firstClick != 'user') {
+                secondClick = 'user';
+                d3.select('#secondClickButtonDiv').html(secondButtonHTML());
+            }
             brushed();
         });
 
@@ -930,9 +990,30 @@ function renderHeatMap(dataobj) {
 }
 
 
+function firstButtonHTML(){
+    console.log('firstButton');
+    var clicked = (firstClick == 'user') ? userSelected : repoSelected;
+    var link = (firstClick == 'user') ? ReverseMapper[userSelected] : 'balanced/' + ReverseMapper[repoSelected];
+    link = "\"http://github.com/" + link + "\"";
+
+    return "<ul class='nav createFirstButtons' style='margin-top:5px'><li><button type='button' onclick='firstClicked()' class='btn btn-small'>" + clicked + "</button></li><a href=" + link +" class='btn' target='_blank'>"+"<i class='icon-share'>"+"</i></a></ul>";       
+}
+
+
+function secondButtonHTML(){
+    console.log('secondButton');
+    var clicked = (secondClick == 'user') ? userSelected : repoSelected;
+    var link = 'balanced/' + ReverseMapper[repoSelected] + '/commits?author=' + ReverseMapper[userSelected];
+    link = "\"http://github.com/" + link + "\"";    
+
+    return "<ul class='nav createSecondButtons' style='margin-top:5px'><a class='btn btn-small' href=" + link + " target='_blank'>" + clicked + "<i class='icon-share'></i></a>";       
+}
+
+
 function radioUpdateSize(dataInput){
     sizeSelected = dataInput;
-    radioUpdate(choiceSelected);
+    var dataobj = filterData(extentVals);
+    render_routine(dataobj);
 }
 
 function radioUpdate(dataInput){
@@ -941,11 +1022,34 @@ function radioUpdate(dataInput){
     var dataobj = filterData(null);
     uniTimeSeries = $.extend(true, [], dataobj.all_timeline_data);
     console.log(dataobj);
-
+    // d3.selectAll('.brush').selectAll('rect').remove();
     render_routine(dataobj);
     renderTimeBrush();   
 }
 
+
+function homeClicked(){
+    firstClick = null;
+    secondClick = null;
+    d3.selectAll('.createSecondButtons').remove();
+    d3.selectAll('.createFirstButtons').remove();
+    var dataobj = filterData(extentVals);
+    render_routine(dataobj);
+}
+
+
+function firstClicked(){
+    secondClick = null;
+    d3.selectAll('.createSecondButtons').remove();
+    var dataobj = filterData(extentVals);
+    render_routine(dataobj);
+}
+
+// function secondClicked(){
+//     secondClick = null;
+//     var dataobj = filterData(extentVals);
+//     render_routine(dataobj);
+// }
 
 function brushed(){
     extentVals = brush.empty() ? xScaleTimeBrush.domain() : brush.extent();
