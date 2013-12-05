@@ -41,13 +41,13 @@ h1 {
   cursor: default;
 }
 
-#button-form {
+.button-form {
   margin-bottom:12px;
   font-size: 100%;
   background: #eee;
 }
 
-#button-form td{
+.button-form td{
   font-size: 13px;
 }
 
@@ -180,7 +180,7 @@ path {
 
 .timeBrushAllBar {
   fill: red;
-  fill-opacity: 1.0;
+  fill-opacity: 0.6;
 }
 
 .tick{

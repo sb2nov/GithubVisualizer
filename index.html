@@ -2,15 +2,17 @@
 <head>
   <meta charset="UTF-8">
   <title>GitVis</title>
+  <link rel="stylesheet" href="css/colorbrewer.css" />
   <link rel="stylesheet" href="css/gitvis.css" />
   <script type="text/javascript" src='lib/d3.v3.js'></script>
+  <script type="text/javascript" src='js/colorbrewer.js'></script>
   <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
   <script type="text/javascript" src="js/jquery.poshytip.js"></script>
   <script type="text/javascript" src="js/moment.min.js"></script>
   <script type="text/javascript" src='js/gitvis.js'></script>
 </head>
 <body onload="init()"> <!-- init() method defined in coffee.js-->
-    <form><div id='button-form'>
+    <form> <div class='button-form' >
       <table>
        <tr>
           <td>Area Represents:</td>
@@ -21,7 +23,17 @@
         </tr>
       </table>
     </div></form>
-    
+    <form><div class='button-form'>
+      <table>
+       <tr>
+          <td>Size Represents :</td>
+          <td><label><input type="radio" name="size" class="size-radio" value="commits" id="select-size" checked># Commits</label></td>
+          <td><label><input type="radio" name="size" class="size-radio" value="total">Total</label></td>
+          <td><label><input type="radio" name="size" class="size-radio" value="additions">Additions</label></td>
+          <td><label><input type="radio" name="size" class="size-radio" value="deletions">Deletions</label></td>
+        </tr>
+      </table>
+    </div></form>
     <div id="timeline-div"></div>
     <div id="timeline-brush-div"></div>
     <hr>

@@ -4,6 +4,7 @@ var userSelected = null;
 var firstClick = null;
 var secondClick = null;
 var choiceSelected = 'commits';
+var sizeSelected = 'commits';
 
 // Data Variables
 var rawdata = null;
@@ -13,7 +14,8 @@ var extentOfDays = [];
 var heatMapPadding = 100;
 var cellLimit = 60;
 var buckets = 9;
-var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+var buckets_tree = 7;
+// var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
 var nameMapperObj = {"External": "Open Source", 
                     "atmos": "Corey Donohoe",
@@ -62,6 +64,12 @@ function getChoice(){
     if(choiceSelected == 'commits'){ return function(d) {return d.values.count;}}
 }
 
+function getChoiceSize(){
+    if(sizeSelected == 'total'){ return function(d) {return d.values.total;}}
+    if(sizeSelected == 'additions'){ return function(d) {return d.values.additions;}}
+    if(sizeSelected == 'deletions'){ return function(d) {return d.values.deletions;}}
+    if(sizeSelected == 'commits'){ return function(d) {return d.values.count;}}
+}
 
 function getChoiceValue(d){
     if(choiceSelected == 'total'){ return d.total;}
@@ -204,6 +212,9 @@ function init(){
         .value(getChoice())
         .round(false);
 
+    zscaleRepoMap = d3.scale.quantile()
+        .range(colorbrewer.BuGn[buckets_tree]);
+
     // ----------------------------- //
     // ----------------------------- //
 
@@ -220,6 +231,9 @@ function init(){
         .children(function(d) { return d.values; })
         .value(getChoice())
         .round(false);
+
+    zscaleUserMap = d3.scale.quantile()
+        .range(colorbrewer.Blues[buckets_tree]);
 
     // ----------------------------- //
     // ----------------------------- //
@@ -240,7 +254,7 @@ function init(){
         
     yScaleHeatMap = d3.scale.ordinal();
     zscaleHeatMap = d3.scale.quantile()
-        .range(colors);
+        .range(colorbrewer.YlGnBu[9]);
 
     yAxisHeatMap = d3.svg.axis()
         .orient('left')
@@ -278,6 +292,7 @@ function init(){
     format = d3.format("0,000");
     d3.select('#select-score').property('checked', true);
     d3.selectAll(".mode-radio").on("change", function() { radioUpdate(this.value);});
+    d3.selectAll(".size-radio").on("change", function() { radioUpdateSize(this.value);});
 
 
     // Update Page Function
@@ -684,6 +699,9 @@ function renderRepoMap(dataobj){
     
     var repoData = repoTreeMap.nodes(dataobj.repo_map_data)
 
+    zscaleRepoMap
+        .domain([0, buckets_tree-1, d3.max(dataobj.repo_map_data.values.map(getChoiceSize()))])
+
     nodelinkRepo = repoMapDiv.selectAll(".nodelink")
         .data(repoData)
         .enter()
@@ -713,7 +731,7 @@ function renderRepoMap(dataobj){
         .attr("class", "node")
         .transition().call(position)
         .attr("stroke", "#FFF")
-        .style("background", function(d) { return d.values ? color(d.key) : null; });
+        .style("background", function(d) { return d.values ? zscaleRepoMap(getChoiceSize()(d)) : null; });
     
     repoMapDiv.selectAll(".node")
         .data(repoData)
@@ -754,7 +772,11 @@ function  renderUserMap(dataobj){
     
     // Usermap Render Function
     var userData = userTreeMap.nodes(dataobj.user_map_data)
-    
+
+    zscaleUserMap
+        .domain([0, buckets_tree-1, d3.max(dataobj.user_map_data.values.map(getChoiceSize()))])
+    // console.log(zscaleUserMap.domain())
+
     nodelinkUser = userMapDiv.selectAll(".nodelink")
         .data(userData)
         .enter()
@@ -784,7 +806,7 @@ function  renderUserMap(dataobj){
         .attr("class", "node")
         .transition().call(position)
         .attr("stroke", "#FFF")
-        .style("background", function(d) { return d.values ? color(d.key) : null; });
+        .style("background", function(d) { return d.values ? zscaleUserMap(getChoiceSize()(d)) : null; });
 
     userMapDiv.selectAll(".node")
         .data(userData)
@@ -847,7 +869,7 @@ function renderHeatMap(dataobj) {
 
     // Define the Color Scale
     zscaleHeatMap
-        .domain([1, buckets - 1, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
+        .domain([0, buckets - 1, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
     // console.log(zscaleHeatMap.domain());
     
     // YAxis Update
@@ -897,6 +919,11 @@ function renderHeatMap(dataobj) {
         });
 }
 
+
+function radioUpdateSize(dataInput){
+    sizeSelected = dataInput;
+    radioUpdate(choiceSelected);
+}
 
 function radioUpdate(dataInput){
     choiceSelected = dataInput;
