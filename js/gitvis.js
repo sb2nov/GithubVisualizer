@@ -86,7 +86,7 @@ function init(){
     parsedatestamp = d3.time.format("%Y-%m-%d").parse;
     color = d3.scale.category20();
 
-    margin = {top: 5, right: 5, bottom: 30, left: 50};
+    margin = {top: 20, right: 20, bottom: 40, left: 30};
     // margin_map = {top: 5, right: 5, bottom: 30, left: 150};
     margin_map = margin;
     windowwidth = d3.select('body').style('width').replace('px','');
@@ -110,11 +110,11 @@ function init(){
 
     timeDiv = d3.select("#timeline-div")
         .style("position", "relative")
-        .style("width", width + margin.left + margin.right + "px")
-        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("width", width + "px")
+        .style("height", height_single + "px")
         // .style("left", margin.left + "px")   
         // .style("margin-bottom", margin.bottom + "px")
-        .style("top", margin.top + "px");
+        // .style("top", margin.top + "px");
 
     xScaleTimeLine = d3.time.scale()
         .range([0, width]);
@@ -137,7 +137,7 @@ function init(){
         .tickPadding(8);
     
     timeSvg = timeDiv.append('svg')
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + "px")
         .attr("height", height_single + margin.top + margin.bottom)
         .attr('class', 'timeSvgClass')
         .append('g')
@@ -156,7 +156,7 @@ function init(){
     // TimeLine Brush Initializatoin
     timeBrushDiv = d3.select("#timeline-brush-div")
         .style("position", "relative")
-        .style("width", width + margin.left + margin.right + "px")
+        .style("width", width + "px")
         .style("height", height_brush_div + margin.top + margin.bottom + "px")
         .style("top", margin.top + "px");
 
@@ -177,7 +177,7 @@ function init(){
         .on("brush", brushed);
 
     timeBrushSvg = timeBrushDiv.append('svg')
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + "px")
         .attr("height", height_brush_div + margin.top + margin.bottom)
         .attr('class', 'timeBrushSvgClass')
         .append('g')
@@ -201,12 +201,13 @@ function init(){
     // RepoMap Initialization
     repoMapDiv = d3.select("#treemap-repo-div")
         .style("position", "relative")
-        .style("width", width_half + margin.left + margin.right + "px")
+        .style("width", width_half + "px")
         .style("height", (height/3) + margin.top + margin.bottom + "px")
-        .style("top", margin.top + "px");
+        .style("top", margin.top + "px")
+        .style('border', '1px solid');
 
     repoTreeMap = d3.layout.treemap()
-        .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
+        .size([(width_half), ((height/3) + margin.top + margin.bottom)])
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(getChoice())
@@ -221,12 +222,13 @@ function init(){
     // UserMap Initialization
     userMapDiv = d3.select("#treemap-user-div")
         .style("position", "relative")
-        .style("width", width_half + margin.left + margin.right + "px")
+        .style("width", width_half + "px")
         .style("height", (height/3) + margin.top + margin.bottom + "px")
-        .style("top", margin.top + "px");
+        .style("top", margin.top + "px")
+        .style('border', '1px solid');
 
     userTreeMap = d3.layout.treemap()
-        .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
+        .size([(width_half), ((height/3) + margin.top + margin.bottom)])
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(getChoice())
@@ -270,7 +272,7 @@ function init(){
 
     // Tooltip Initialization
     tooltip_div = d3.select("body").append("div")   
-        .attr("class", "tooltip")
+        .attr("class", "Mytooltip")
         .attr('id', 'tooltip')
         .style("visibility", "hidden");
 
@@ -950,12 +952,12 @@ function brushed(){
 
 
 function tooltipString(d){
-    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
+    return "<b class='Mytooltip Mytooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
 function tooltipStringHeat(d){
     
-    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
+    return "<b class='Mytooltip Mytooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
 }
 
 function compareDates(a,b) {
