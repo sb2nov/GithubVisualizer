@@ -207,3 +207,6 @@ path {
 .heatMapCell:hover{
   fill-opacity: 1.0;
 }
+
+.top-buffer { margin-top:20px; }
+.top-buffer-2 { margin-top:50px; }
