@@ -12,6 +12,8 @@ var numOfDays = 0;
 var extentOfDays = [];
 var heatMapPadding = 100;
 var cellLimit = 60;
+var buckets = 9;
+var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
 
@@ -201,8 +203,8 @@ function init(){
         // .attr('transform', 'translate(' + margin_map.left + ',' + margin_map.top + ')');
         
     yScaleHeatMap = d3.scale.ordinal();
-    zscaleHeatMap = d3.scale.linear()
-        .range(['#FFF7BC', '#D95F0E']);
+    zscaleHeatMap = d3.scale.quantile()
+        .range(colors);
 
     yAxisHeatMap = d3.svg.axis()
         .orient('left')
@@ -803,7 +805,7 @@ function renderHeatMap(dataobj) {
 
     // Define the Color Scale
     zscaleHeatMap
-        .domain([0, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
+        .domain([1, buckets - 1, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
     // console.log(zscaleHeatMap.domain());
     
     // YAxis Update
