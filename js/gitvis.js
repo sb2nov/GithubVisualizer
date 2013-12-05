@@ -10,6 +10,7 @@ var rawdata = null;
 var uniTimeSeries = null;
 var numOfDays = 0;
 var extentOfDays = [];
+var heatMapPadding = 0;
 
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
 
@@ -20,6 +21,14 @@ function getChoice(){
     if(choiceSelected == 'additions'){ return function(d) {return d.values.additions;}}
     if(choiceSelected == 'deletions'){ return function(d) {return d.values.deletions;}}
     if(choiceSelected == 'commits'){ return function(d) {return d.values.count;}}
+}
+
+
+function getChoiceValue(d){
+    if(choiceSelected == 'total'){ return d.total;}
+    if(choiceSelected == 'additions'){ return d.additions;}
+    if(choiceSelected == 'deletions'){ return d.deletions;}
+    if(choiceSelected == 'commits'){ return d.count;}
 }
 
 
@@ -185,6 +194,20 @@ function init(){
         .attr("height", height_single + margin.top + margin.bottom)
         .attr('class', 'heatSvgClass')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        
+    yScaleHeatMap = d3.scale.ordinal();
+    zscaleHeatMap = d3.scale.linear()
+        .range(['#FFF7BC', '#D95F0E']);
+
+    yAxisHeatMap = d3.svg.axis()
+        .scale(yScaleHeatMap)
+        .orient('left')
+        .tickSize(5,1)
+        .tickPadding(8);
+
+    heatSvgYaxis = heatMapSvg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + heatMapPadding + "," + 0 + ")")
 
     // ----------------------------- //
     // ----------------------------- //
@@ -268,7 +291,7 @@ function filterData(extentVals){
     else
         extentOfDays = extentVals;
 
-    numOfDays = moment(extentOfDays[1]).diff(extentOfDays[0], 'days');
+    numOfDays = moment(extentOfDays[1]).diff(extentOfDays[0], 'days') + 1;
 
     repoMapDataNest = null;
     userMapDataNest = null;
@@ -742,71 +765,60 @@ function renderHeatMap(dataobj) {
     var data = dataobj.heat_map_data;
     if (!data) { return; }
 
-    var heatMapPadding = 0;
     var yAxisData = data.map(function(d) {return d.key;});
+
+    // console.log(yAxisData)
     // var totalSteps = moment(extentOfDays[1]).diff(extentOfDays[0],'months');
     // var cellSize = computeCellSize(totalSteps, data.length, heatMapPadding);
+
     cellSize = 17;
-    console.log(data);
+    // console.log(data);
     var heatMapData = fillMissingData(data, heatMapPadding, cellSize);
-    console.log(heatMapData);
+    // console.log(heatMapData);
 
     var heatMapWidth = heatMapData[0].length * cellSize;
     var heatMapHeight = data.length * cellSize;
 
     // Y-Axis Scale
-    var yScaleHeatMap = d3.scale.ordinal()
+    yScaleHeatMap
         .domain(yAxisData)
         .rangeBands([heatMapPadding, heatMapHeight-heatMapPadding]);
 
     // Define the Color Scale
-    var zscale = d3.scale.linear()
-        .domain([0, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return e.value;}) }))])
-        .range(['red', 'green']);
-    // console.log(zscale.domain());
-
-    var yAxisHeatMap = d3.svg.axis()
-        .scale(yScaleHeatMap)
-        .tickSize(0)
-        .orient('left');
+    zscaleHeatMap
+        .domain([0, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
+    // console.log(zscaleHeatMap.domain());
+    
+    // YAxis Update
+        
+    heatSvgYaxis.transition().call(yAxisHeatMap);
 
     // Row Stuff
-    heatMapRow = heatMapSvg.selectAll(".heatMapRow")
-        .data(heatMapData)
-        .enter()
-            .append("svg:g")
-            .attr("class", "heatMapRow");
-
-    heatMapSvg.selectAll(".heatMapRow")
-        .data(heatMapData)
-        .exit().remove();
-
-    heatMapSvg.selectAll('.heatMapRow')
-        .data(heatMapData)
-        .transition();
+    heatMapRow = heatMapSvg.selectAll(".heatMapRow").data(heatMapData);
     
+    heatMapRow.enter()
+        .append("svg:g")
+        .attr("class", "heatMapRow");
+
+    heatMapRow.exit().remove();
+    heatMapRow.transition();
     
-    // Cell Stuff
-    heatMapRow.selectAll('.heatMapCell')
-        .data(function(d) { return d; })
-        .enter()
-            .append('svg:rect')
-            .attr('class', 'heatMapCell');
-
-    heatMapRow.selectAll('.heatMapCell')
-        .data(function(d) { return d; })
-        .exit().remove();
-
-    heatMapCell = heatMapRow.selectAll('.heatMapCell')
-        .data(function(d) { return d; })
-        .transition()
+    heatMapCell = heatMapRow.selectAll('.heatMapCell').data(function(d) { return d;} )
+    
+    heatMapCell.exit().remove();
+    heatMapCell.enter()
+        .append('svg:rect')
+        .attr('class', 'heatMapCell');
+    
+    heatMapCell
         .attr("x", function(d) { return d.x; })
-        .attr("y", function(d) { return (yScaleHeatMap(d.names)); })
+        .attr("y", function(d) { return (yScaleHeatMap(d.key)); })
         .attr("width", function(d) { return d.width; })
         .attr("height", function(d) { return d.height; })
-    
-    heatMapRow.selectAll('.heatMapCell')
-        .data(function(d) {return d;})
+        .style("stroke", '#FFF')
+        .style("fill", function(d){ return zscaleHeatMap(getChoiceValue(d)); });
+
+    heatMapCell
         .on("mouseover", function(d){
             tooltip_div       
                 .style("visibility", "visible")
@@ -854,9 +866,8 @@ function tooltipString(d){
 }
 
 function tooltipStringHeat(d){
-    var choiceTitle = choiceSelected[0].toUpperCase() + choiceSelected.substring(1,choiceSelected.length);
     
-    return "<b class='tooltip tooltitle'>" + d.names + "</b><div>" + "<table ><tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>" + choiceTitle + "</b></td><td style='text-align: right'>" + format(d.value) + "</td></tr></table></div>";
+    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
 }
 
 function compareDates(a,b) {
@@ -930,7 +941,7 @@ function fillDaysWeeks(inputData, padding, cellSize, daily) {
     }else{
         var tmpDate = new Date(extentOfDays[0]);
         startDate = d3.time.day.offset(tmpDate, (-1) * tmpDate.getDay()).toISOString().substring(0,10)
-        totalSteps = numOfDays/7;
+        totalSteps = Math.ceil(numOfDays/7);
         size = 7;
         console.log("Weekly: " + startDate);
     }
@@ -959,25 +970,29 @@ function fillDaysWeeks(inputData, padding, cellSize, daily) {
         k = 0;
         for (var j = 0; j < xcount; j++)
         {
-            console.log(currDate);
             if(k < inputData[i].values.length && inputData[i].values[k].key == currDate) {
                 data[i].push({ 
                     time: inputData[i].values[k].key,
-                    names: inputData[i].key, 
-                    value: getChoice()(inputData[i].values[k]),
+                    key: inputData[i].key, 
+                    count: inputData[i].values[k].values.count,
+                    total: inputData[i].values[k].values.total,
+                    additions: inputData[i].values[k].values.additions,
+                    deletions: inputData[i].values[k].values.deletions,
                     width: svgHeatMapItemWidth,
                     height: svgHeatMapItemHeight,
                     x: xpos,
                     y: ypos,
                 });
                 k++;
-                console.log(k);
             } 
             else {
                 data[i].push({ 
-                    time: moment(currDate).add('days',1).toISOString().substring(0,10),
-                    names: inputData[i].key, 
-                    value: 0,
+                    time: currDate,
+                    key: inputData[i].key, 
+                    count: 0,
+                    additions: 0,
+                    deletions: 0,
+                    total: 0,
                     width: svgHeatMapItemWidth,
                     height: svgHeatMapItemHeight,
                     x: xpos,
@@ -999,7 +1014,8 @@ function fillDaysWeeks(inputData, padding, cellSize, daily) {
 function fillMonths(inputData, padding, cellSize) {
     //console.log(inputData);
     
-    var totalSteps = moment(extentOfDays[1]).diff(extentOfDays[0],'months');
+    var totalSteps = moment(extentOfDays[1].substring(0,7)).diff(extentOfDays[0].substring(0,7),'months') + 1;
+    
     var svgHeight = inputData.length*cellSize + padding*2;
     var svgWidth = totalSteps*cellSize + padding*2;
 
@@ -1016,7 +1032,7 @@ function fillMonths(inputData, padding, cellSize) {
     var ypos = startY;
     var newValue = 0;
     var k = 0;
-
+    
     for (var i = 0; i < ycount; i++)
     {
         data.push(new Array());
@@ -1027,8 +1043,11 @@ function fillMonths(inputData, padding, cellSize) {
             if(k < inputData[i].values.length && inputData[i].values[k].key == currDate) {
                 data[i].push({ 
                     time: inputData[i].values[k].key,
-                    names: inputData[i].key, 
-                    value: getChoice()(inputData[i].values[k]),
+                    key: inputData[i].key, 
+                    count: inputData[i].values[k].values.count,
+                    total: inputData[i].values[k].values.total,
+                    additions: inputData[i].values[k].values.additions,
+                    deletions: inputData[i].values[k].values.deletions,
                     width: svgHeatMapItemWidth,
                     height: svgHeatMapItemHeight,
                     x: xpos,
@@ -1038,9 +1057,12 @@ function fillMonths(inputData, padding, cellSize) {
             } 
             else {
                 data[i].push({ 
-                    time: moment(currDate).add('months',1).toISOString().substring(0,10),
-                    names: inputData[i].key, 
-                    value: 0,
+                    time: currDate,
+                    key: inputData[i].key, 
+                    count: 0,
+                    additions: 0,
+                    deletions: 0,
+                    total: 0,
                     width: svgHeatMapItemWidth,
                     height: svgHeatMapItemHeight,
                     x: xpos,
