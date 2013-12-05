@@ -10,7 +10,8 @@ var rawdata = null;
 var uniTimeSeries = null;
 var numOfDays = 0;
 var extentOfDays = [];
-var heatMapPadding = 0;
+var heatMapPadding = 100;
+var cellLimit = 60;
 
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
 
@@ -40,10 +41,14 @@ function init(){
     color = d3.scale.category20();
 
     margin = {top: 5, right: 5, bottom: 30, left: 50};
+    // margin_map = {top: 5, right: 5, bottom: 30, left: 150};
+    margin_map = margin;
     windowwidth = d3.select('body').style('width').replace('px','');
     windowheight = Math.max(d3.select('body').style('height').replace('px',''), 900);
+
     width = windowwidth - margin.left - 4*margin.right;
     height = windowheight - margin.top - margin.bottom;
+    w2 = windowwidth - margin_map.left - 4*margin_map.right;
     
     // console.log(width);
     // console.log(height);
@@ -151,11 +156,11 @@ function init(){
     repoMapDiv = d3.select("#treemap-repo-div")
         .style("position", "relative")
         .style("width", width_half + margin.left + margin.right + "px")
-        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("height", (height/3) + margin.top + margin.bottom + "px")
         .style("top", margin.top + "px");
 
     repoTreeMap = d3.layout.treemap()
-        .size([(width_half + margin.left + margin.right), (height_single + margin.top + margin.bottom)])
+        .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(getChoice())
@@ -168,11 +173,11 @@ function init(){
     userMapDiv = d3.select("#treemap-user-div")
         .style("position", "relative")
         .style("width", width_half + margin.left + margin.right + "px")
-        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("height", (height/3) + margin.top + margin.bottom + "px")
         .style("top", margin.top + "px");
 
     userTreeMap = d3.layout.treemap()
-        .size([(width_half + margin.left + margin.right), (height_single + margin.top + margin.bottom)])
+        .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
         // .sticky(true)
         .children(function(d) { return d.values; })
         .value(getChoice())
@@ -184,30 +189,29 @@ function init(){
     // HeatMap Initialization
     heatMapDiv = d3.select("#heatmap-div")
         .style("position", "relative")
-        .style("width", width + margin.left + margin.right + "px")
-        .style("height", height_single + margin.top + margin.bottom + "px")
-        .style("top", margin.top + "px")
-        .style("left", margin.left + "px");
+        .style("width", w2 + margin_map.left + margin_map.right + "px")
+        // .style("height", (height/2) + margin.top + margin.bottom + "px")
+        .style("top", margin_map.top + "px")
+        // .style("left", margin_map.left + "px");
     
     heatMapSvg = heatMapDiv.append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr("height", height_single + margin.top + margin.bottom)
+        .attr('width', w2 + margin_map.left + margin_map.right)
+        // .attr("height", (height/2) + margin.top + margin.bottom)
         .attr('class', 'heatSvgClass')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        // .attr('transform', 'translate(' + margin_map.left + ',' + margin_map.top + ')');
         
     yScaleHeatMap = d3.scale.ordinal();
     zscaleHeatMap = d3.scale.linear()
         .range(['#FFF7BC', '#D95F0E']);
 
     yAxisHeatMap = d3.svg.axis()
-        .scale(yScaleHeatMap)
         .orient('left')
-        .tickSize(5,1)
-        .tickPadding(8);
+        .tickSize(3,1)
+        .tickPadding(3);
 
-    heatSvgYaxis = heatMapSvg.append("g")
+    heatSvgYaxis = heatMapSvg.append('svg:g')
         .attr("class", "axis")
-        .attr("transform", "translate(" + heatMapPadding + "," + 0 + ")")
+        .attr('transform', 'translate('+ heatMapPadding +','+ (0) +')')
 
     // ----------------------------- //
     // ----------------------------- //
@@ -338,6 +342,13 @@ function filterData(extentVals){
             .rollup(rollLeaves)
             .entries(filterFirstClickData);
 
+        heatMapDataNest = d3.nest()
+           .key(function(d) {return d.username;})
+           .key(function(d) { return determineScale(d.timestamp);})
+           .sortKeys(compareDates)
+           .rollup(rollLeaves)
+           .entries(filterFirstClickData);
+
     }
     
     if(firstClick=='user'){
@@ -360,6 +371,12 @@ function filterData(extentVals){
             .rollup(rollLeaves)
             .entries(filterFirstClickData);
 
+        heatMapDataNest = d3.nest()
+           .key(function(d) {return d.repo;})
+           .key(function(d) { return determineScale(d.timestamp);})
+           .sortKeys(compareDates)
+           .rollup(rollLeaves)
+           .entries(filterFirstClickData);
     }
 
     if(secondClick){
@@ -765,7 +782,7 @@ function renderHeatMap(dataobj) {
     var data = dataobj.heat_map_data;
     if (!data) { return; }
 
-    var yAxisData = data.map(function(d) {return d.key;});
+    yAxisData = data.map(function(d) {return d.key;});
 
     // console.log(yAxisData)
     // var totalSteps = moment(extentOfDays[1]).diff(extentOfDays[0],'months');
@@ -782,7 +799,7 @@ function renderHeatMap(dataobj) {
     // Y-Axis Scale
     yScaleHeatMap
         .domain(yAxisData)
-        .rangeBands([heatMapPadding, heatMapHeight-heatMapPadding]);
+        .rangeBands([0, heatMapHeight]);
 
     // Define the Color Scale
     zscaleHeatMap
@@ -790,7 +807,7 @@ function renderHeatMap(dataobj) {
     // console.log(zscaleHeatMap.domain());
     
     // YAxis Update
-        
+    yAxisHeatMap.scale(yScaleHeatMap)    
     heatSvgYaxis.transition().call(yAxisHeatMap);
 
     // Row Stuff
@@ -904,11 +921,11 @@ function determineScale(timestamp) {
     //var endDate = moment(endDate);
     //console.log(numOfDays);
 
-    if(numOfDays < 40) {
+    if(numOfDays < cellLimit) {
         //console.log(timestamp);
         return timestamp;
     }
-    else if(numOfDays/7 < 40) {
+    else if(numOfDays/7 < cellLimit) {
         timestamp = new Date(timestamp);
         //console.log(d3.time.day.offset(timestamp, (-1)*timestamp.getDay()));
         return d3.time.day.offset(timestamp, (-1) * timestamp.getDay()).toISOString().substring(0,10);
@@ -920,9 +937,9 @@ function determineScale(timestamp) {
 
 function fillMissingData(data, padding, cellSize) {
      //console.log(numOfDays);
-     if(numOfDays < 40){
+     if(numOfDays < cellLimit){
          return fillDaysWeeks(data, padding, cellSize, true);
-     } else if(numOfDays/7 <40) {
+     } else if(numOfDays/7 < cellLimit) {
          return fillDaysWeeks(data, padding, cellSize, false);
      } else {
         return fillMonths(data, padding, cellSize);
