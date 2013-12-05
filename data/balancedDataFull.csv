@@ -16,8 +16,8 @@ balanced-docs,cieplak,1,Patrick Cieplak,2013-07-18T21:14:10Z,19867,11692,31559,b
 balanced-docs,cieplak,1,Patrick Cieplak,2013-07-18T21:43:11Z,11466,19641,31107,json,https://github.com/cieplak,https://github.com/balanced/balanced-docs
 www.balancedpayments.com,matthewfl,1,Matthew Francis-Landau,2013-06-07T00:26:56Z,29573,0,29573,redoing init,https://github.com/matthewfl,https://github.com/balanced/www.balancedpayments.com
 balanced-dashboard,External,-1,Ryan Loomba,2013-05-08T18:25:13Z,5004,21504,26508,Merge remote-tracking branch 'upstream/master' into add-license-file,https://github.com/rloomba,https://github.com/balanced/balanced-dashboard
-Small Projects,External,-1,Ryan Loomba,2013-05-23T22:24:46Z,25739,3,25742,initial commit,https://github.com/rloomba,https://github.com/balanced/
-Small Projects,External,-1,Scott Goci,2013-08-07T05:11:41Z,219,21678,21897,Updated rails app to somewhat conform with a working app,https://github.com/scouttyg,https://github.com/balanced/
+small-projects,External,-1,Ryan Loomba,2013-05-23T22:24:46Z,25739,3,25742,initial commit,https://github.com/rloomba,https://github.com/balanced/
+small-projects,External,-1,Scott Goci,2013-08-07T05:11:41Z,219,21678,21897,Updated rails app to somewhat conform with a working app,https://github.com/scouttyg,https://github.com/balanced/
 balanced-dashboard,daliwali,1,Dali Zheng,2013-11-07T02:30:04Z,2515,16154,18669,pass apply and invoices tests,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-04-17T21:39:54Z,13070,2216,15286,"Upgrade to Ember RC2 and latest Ember Data, add prod versions of Ember and Ember Data",https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 active_merchant,External,-1,Pat Leamon,2012-02-16T23:29:02Z,14553,33,14586,Validate generated XML against paypal xsd's,https://github.com/stiak,https://github.com/balanced/active_merchant
@@ -135,7 +135,7 @@ active_merchant,External,-1,Nathaniel Talbott,2011-07-25T12:28:52Z,879,131,1010,
 active_merchant,External,-1,Nick Rogers,2012-02-29T14:19:29Z,984,1,985,Authorize.Net SIM support,https://github.com/ntalbott,https://github.com/balanced/active_merchant
 active_merchant,External,-1,Dennis Theisen,2012-07-10T15:47:48Z,975,0,975,Orbital gateway: Add tests to ensure requests adhere to DTD,https://github.com/Soleone,https://github.com/balanced/active_merchant
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-09-17T21:48:04Z,970,4,974,Fixes #476 - thanks @headwebmonkey !,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-28T19:16:44Z,973,0,973,started copying over templates from python rentmybike app,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-28T19:16:44Z,973,0,973,started copying over templates from python rentmybike app,https://github.com/matthewfl,https://github.com/balanced/
 www.balancedpayments.com,External,-1,Tarun Chaudhry,2013-10-17T21:58:39Z,844,120,964,merged,https://github.com/tarunc,https://github.com/balanced/www.balancedpayments.com
 balanced-dashboard,daliwali,1,Dali Zheng,2013-11-13T00:40:42Z,433,518,951,refactor test setup,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-ruby,External,-1,rloomba,2013-06-12T19:22:21Z,935,5,940,"Merge pull request #86 from rloomba/scenarios-fixed
@@ -350,7 +350,7 @@ balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-09-30T18:33:31Z,245,255,500
 
 Customerjs cleanup",https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 www.balancedpayments.com,matthewfl,1,Matthew Francis-Landau,2013-06-13T02:12:49Z,163,329,492,have help page pulling from balanced-docs faq and auto complete with topics whitelist,https://github.com/matthewfl,https://github.com/balanced/www.balancedpayments.com
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-28T23:07:38Z,404,86,490,working on getting the rent,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-28T23:07:38Z,404,86,490,working on getting the rent,https://github.com/matthewfl,https://github.com/balanced/
 balanced-api,matthewfl,1,Matthew Francis-Landau,2013-08-12T22:11:10Z,351,137,488,"merging, need to change path stuff",https://github.com/matthewfl,https://github.com/balanced/balanced-api
 balanced-java,cieplak,1,Patrick Cieplak,2013-06-19T22:55:06Z,258,228,486,Removed most instances of empty uri strings; there remain a few customer scenarios that are not yet in balanced-docs that still have empty strings,https://github.com/cieplak,https://github.com/balanced/balanced-java
 balanced-dashboard,daliwali,1,Dali Zheng,2013-10-18T22:41:19Z,483,2,485,fix datepicker,https://github.com/daliwali,https://github.com/balanced/balanced-dashboard
@@ -564,7 +564,7 @@ balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-09-17T23:57:18Z,149,171,320
 active_merchant,External,-1,John Duff,2011-11-14T16:18:51Z,230,86,316,"Merge pull request #213 from ZenCocoon/signatures
 
 Ogone: Add support for all signature procedures. Helped by @rymai",https://github.com/jduff,https://github.com/balanced/active_merchant
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-29T16:52:35Z,257,57,314,added database and dummy data,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-29T16:52:35Z,257,57,314,added database and dummy data,https://github.com/matthewfl,https://github.com/balanced/
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-07-19T19:26:37Z,240,74,314,Add bank account page,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 hubot,atmos,1,Corey Donohoe,2011-10-26T20:40:40Z,76,16,92,"Merge pull request #60 from eventualbuddha/campfire-enter-leave
 
@@ -600,7 +600,7 @@ active_merchant,External,-1,John Duff,2011-08-10T14:36:40Z,282,29,311,"Merge pul
 
 Quickpay updated to support protocol version 4 (with backwards compatibility)",https://github.com/jduff,https://github.com/balanced/active_merchant
 billy,victorlin,1,Victor Lin,2013-08-17T03:08:18Z,305,5,310,Add customer model,https://github.com/victorlin,https://github.com/balanced/billy
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T01:42:44Z,261,48,309,"charging the card with renting working, needs to be clean up still and need examples for adding bank accounts",https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T01:42:44Z,261,48,309,"charging the card with renting working, needs to be clean up still and need examples for adding bank accounts",https://github.com/matthewfl,https://github.com/balanced/
 hubot,atmos,1,Corey Donohoe,2011-10-26T23:19:12Z,2,0,2,add links to cedar docs,https://github.com/atmos,https://github.com/balanced/hubot
 balanced-docs,External,-1,Ryan Loomba,2013-06-17T06:11:43Z,157,152,309,render scenarios from client submodules,https://github.com/rloomba,https://github.com/balanced/balanced-docs
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-07-05T01:45:44Z,164,145,309,Extract search functionality to a mixin,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
@@ -1667,7 +1667,7 @@ billy,victorlin,1,Victor Lin,2013-10-08T02:19:21Z,106,0,106,Add tests for all re
 www.balancedpayments.com,External,-1,Tarun Chaudhry,2013-10-21T22:43:54Z,85,21,106,updating grunt,https://github.com/tarunc,https://github.com/balanced/www.balancedpayments.com
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-22T02:12:38Z,76,29,105,Add belongsTo and embedded for models,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-python,mahmoudimus,1,Mahmoud Abdelkader,2012-05-01T04:56:38Z,3,1,4,pep8 and add nose set env as a test dep,https://github.com/mahmoudimus,https://github.com/balanced/balanced-python
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T23:48:20Z,98,7,105,"working on getting listing working, and it running on heroku",https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T23:48:20Z,98,7,105,"working on getting listing working, and it running on heroku",https://github.com/matthewfl,https://github.com/balanced/
 balanced-python,mahmoudimus,1,Mahmoud Abdelkader,2012-05-02T02:48:42Z,12,8,20,cache busting!,https://github.com/mahmoudimus,https://github.com/balanced/balanced-python
 balanced-python,mahmoudimus,1,Mahmoud Abdelkader,2012-05-02T07:10:31Z,4,0,4,add 300 to list of codes,https://github.com/mahmoudimus,https://github.com/balanced/balanced-python
 balanced-python,mahmoudimus,1,Mahmoud Abdelkader,2012-05-02T07:10:58Z,1,1,2,palo alot,https://github.com/mahmoudimus,https://github.com/balanced/balanced-python
@@ -2154,7 +2154,7 @@ billy,victorlin,1,Victor Lin,2013-08-20T07:16:10Z,39,40,79,Replace discount fiel
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-08-27T00:33:33Z,74,5,79,Change production access application to use balanced.js for tokenization (and add a test!),https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-04-30T22:02:07Z,75,3,78,FINALLY got a basic store working for accounts,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced.github.com,kleinsch,1,Nick Kleinschmidt,2013-05-29T15:28:55Z,78,0,78,Beginning of building search blog post,https://github.com/kleinsch,https://github.com/balanced/balanced.github.com
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-06-03T21:31:17Z,70,8,78,updating readme and adding travis-ci,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-06-03T21:31:17Z,70,8,78,updating readme and adding travis-ci,https://github.com/matthewfl,https://github.com/balanced/
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-06-04T02:38:35Z,60,18,78,Add tests and fix bugs for model promise lifecycle methods,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-ruby,mahmoudimus,1,Mahmoud Abdelkader,2012-07-06T04:26:13Z,116,18,134,"pager tests, allows iteration and actual tests that complete this. fixes #18",https://github.com/mahmoudimus,https://github.com/balanced/balanced-ruby
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-06-20T22:20:45Z,46,32,78,Move serialize/deserialize into instance so they can be called up the inheritance tree,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
@@ -2521,18 +2521,18 @@ balanced-python,bninja,1,Andrew,2012-11-20T17:55:07Z,2,2,4,fix next_page check,h
 balanced-python,bninja,1,Andrew,2012-11-20T17:55:19Z,2,2,4,Merge branch 'master' of github.com:balanced/balanced-python,https://github.com/bninja,https://github.com/balanced/balanced-python
 balanced-python,bninja,1,Andrew,2012-11-20T18:00:59Z,3,4,7,fees are not refunded now,https://github.com/bninja,https://github.com/balanced/balanced-python
 balanced-api,matin,1,Matin Tamizi,2012-11-21T00:49:10Z,0,9,9,should not be using ssn_last_4. Using tax_id with four digits,https://github.com/matin,https://github.com/balanced/balanced-api
-Small Projects,mjallday,1,Balanced Marshall,2012-11-22T02:01:58Z,477,0,477,initial commit,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-23T21:42:42Z,105,77,182,move more logic into the models themselves,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-24T00:25:43Z,118,26,144,bulk pay,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-24T00:28:51Z,1,0,1,readme,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-24T00:52:42Z,33,7,40,allow syncing data from balanced -> into local system,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2012-11-26T16:55:58Z,11,11,22,Update README.md,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T02:04:18Z,2,2,4,fix missing file,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T02:11:02Z,2,1,3,include readme,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T02:24:53Z,5,3,8,get working with pip,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T02:25:06Z,11,11,22,Merge branch 'master' of github.com:balanced/django-balanced,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T02:25:29Z,1,1,2,push better readme,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-11-30T17:25:06Z,56,15,71,begin on unit tests,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-22T02:01:58Z,477,0,477,initial commit,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-23T21:42:42Z,105,77,182,move more logic into the models themselves,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-24T00:25:43Z,118,26,144,bulk pay,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-24T00:28:51Z,1,0,1,readme,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-24T00:52:42Z,33,7,40,allow syncing data from balanced -> into local system,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2012-11-26T16:55:58Z,11,11,22,Update README.md,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T02:04:18Z,2,2,4,fix missing file,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T02:11:02Z,2,1,3,include readme,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T02:24:53Z,5,3,8,get working with pip,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T02:25:06Z,11,11,22,Merge branch 'master' of github.com:balanced/django-balanced,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T02:25:29Z,1,1,2,push better readme,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-11-30T17:25:06Z,56,15,71,begin on unit tests,https://github.com/mjallday,https://github.com/balanced/
 balanced-ruby,External,-1,Ryan Loomba,2013-05-13T16:43:14Z,0,67,67,removed transaction spec,https://github.com/rloomba,https://github.com/balanced/balanced-ruby
 status.balancedpayments.com,mjallday,1,Balanced Marshall,2012-12-02T22:06:42Z,13493,0,13493,initial commit,https://github.com/mjallday,https://github.com/balanced/status.balancedpayments.com
 status.balancedpayments.com,mjallday,1,Balanced Marshall,2012-12-02T22:55:09Z,174,11,185,"use native json which apparently is faster, add dummy twitter creds, remove unused js lib junk",https://github.com/mjallday,https://github.com/balanced/status.balancedpayments.com
@@ -2691,8 +2691,8 @@ www.balancedpayments.com,External,-1,Tarun Chaudhry,2013-11-14T18:55:13Z,18,47,6
 balanced-php,bninja,1,Andrew,2012-12-13T01:37:26Z,9,4,13,fixes #11,https://github.com/bninja,https://github.com/balanced/balanced-php
 balanced-php,bninja,1,Andrew,2012-12-13T02:10:08Z,47,15,62,addresses #9,https://github.com/bninja,https://github.com/balanced/balanced-php
 balanced-ruby,mahmoudimus,1,Mahmoud Abdelkader,2012-12-14T01:00:35Z,1,1,2,"whoops, version bump",https://github.com/mahmoudimus,https://github.com/balanced/balanced-ruby
-Small Projects,mjallday,1,Balanced Marshall,2012-12-14T16:14:22Z,10,6,16,test creating a credit for a specific bank,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2012-12-14T17:36:35Z,165,13,178,"native django objects for Card, Account and Debit. still need more tests and admin forms",https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-12-14T16:14:22Z,10,6,16,test creating a credit for a specific bank,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2012-12-14T17:36:35Z,165,13,178,"native django objects for Card, Account and Debit. still need more tests and admin forms",https://github.com/mjallday,https://github.com/balanced/
 active_merchant,External,-1,Daniel Schierbeck,2011-07-24T19:53:05Z,64,0,64,Add a GettingStarted file,https://github.com/dasch,https://github.com/balanced/active_merchant
 balanced-api,mahmoudimus,1,Mahmoud Abdelkader,2012-12-16T06:58:27Z,5394,2488,7882,more resource fixups,https://github.com/mahmoudimus,https://github.com/balanced/balanced-api
 balanced-docs,mahmoudimus,1,Mahmoud Abdelkader,2012-12-17T03:51:40Z,13539,0,13539,"Initial commit, balanced open sources its docs",https://github.com/mahmoudimus,https://github.com/balanced/balanced-docs
@@ -3178,10 +3178,10 @@ balanced.github.com,jkwade,1,Jareau Wade,2013-02-25T16:21:52Z,3,0,3,Update _post
 balanced.github.com,jkwade,1,Jareau Wade,2013-02-25T16:26:06Z,2,2,4,Update _posts/2013-02-25-introducing-balanced-same-day-payouts-wells-fargo.md,https://github.com/jkwade,https://github.com/balanced/balanced.github.com
 balanced-docs,mjallday,1,Balanced Marshall,2013-02-25T17:58:31Z,6,1,7,"tokenize a card example, how long does it take to verify a bank account",https://github.com/mjallday,https://github.com/balanced/balanced-docs
 balanced-ruby,remear,1,Ben Mills,2013-02-25T18:43:12Z,7,0,7,Added OpenSSL troubleshooting section with SSL_connect info,https://github.com/remear,https://github.com/balanced/balanced-ruby
-Small Projects,mjallday,1,Balanced Marshall,2013-02-26T00:43:38Z,14,3,17,add id field,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2013-02-26T01:03:25Z,1187,0,1187,initial,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2013-02-26T01:05:21Z,1,0,1,Update requirements.txt,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2013-02-26T01:06:35Z,8,0,8,Create README.md,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2013-02-26T00:43:38Z,14,3,17,add id field,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2013-02-26T01:03:25Z,1187,0,1187,initial,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-02-26T01:05:21Z,1,0,1,Update requirements.txt,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-02-26T01:06:35Z,8,0,8,Create README.md,https://github.com/mjallday,https://github.com/balanced/
 balanced-ruby,remear,1,Ben Mills,2013-02-26T14:17:41Z,2,1,3,Take a bow in the contributors list,https://github.com/remear,https://github.com/balanced/balanced-ruby
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-07-31T01:52:02Z,58,2,60,Add help popover for unverified customers,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-api,matthewfl,1,Matthew Francis-Landau,2013-08-03T00:47:46Z,40,20,60,"Merge remote-tracking branch 'matin/revision1' into rev1
@@ -3190,9 +3190,9 @@ Conflicts:
     requests/_models/card_hold.json
     requests/_models/credit.json
     requests/_models/debit.json",https://github.com/matthewfl,https://github.com/balanced/balanced-api
-Small Projects,mjallday,1,Balanced Marshall,2013-02-26T18:23:25Z,9,3,12,ctx processor,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2013-02-26T18:25:46Z,17,9,26,pesky pyc,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Balanced Marshall,2013-02-26T18:26:27Z,10,1,11,merge,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2013-02-26T18:23:25Z,9,3,12,ctx processor,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2013-02-26T18:25:46Z,17,9,26,pesky pyc,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Balanced Marshall,2013-02-26T18:26:27Z,10,1,11,merge,https://github.com/mjallday,https://github.com/balanced/
 balanced.github.com,mjallday,1,Marshall Jones,2013-02-26T18:34:09Z,1,1,2,Update _posts/2013-02-23_social_engineering.md,https://github.com/mjallday,https://github.com/balanced/balanced.github.com
 hubot,atmos,1,Corey Donohoe,2013-02-26T18:54:25Z,4,0,4,"Merge pull request #422 from philippbeckmann/packagewin
 
@@ -3200,8 +3200,8 @@ Added launch scripts for windows",https://github.com/atmos,https://github.com/ba
 hubot,tombell,1,Tom Bell,2013-02-26T18:57:11Z,2,0,2,"Merge pull request #421 from omares/master
 
 listner.class expects utils.inspect to be available",https://github.com/tombell,https://github.com/balanced/hubot
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-02-26T22:53:02Z,3250,0,3250,rent my bikes initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
-Small Projects,bninja,1,bninja,2013-02-26T23:59:46Z,14,4,18,skip failing test and travis ci,https://github.com/bninja,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-02-26T22:53:02Z,3250,0,3250,rent my bikes initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,bninja,1,bninja,2013-02-26T23:59:46Z,14,4,18,skip failing test and travis ci,https://github.com/bninja,https://github.com/balanced/
 balanced-api,matthewfl,1,Matthew Francis-Landau,2013-08-13T17:49:07Z,57,3,60,fixing wrong reference syntax,https://github.com/matthewfl,https://github.com/balanced/balanced-api
 balanced-ruby,mahmoudimus,1,Mahmoud Abdelkader,2013-02-27T07:11:35Z,9,1,10,"Merge pull request #64 from remear/master
 
@@ -3328,8 +3328,8 @@ balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-09-30T22:54:11Z,41,18,59,Be
 hubot,tombell,1,Tom Bell,2013-03-08T23:05:18Z,28,0,28,Merge branch 'campfire-play-patch' of https://github.com/cupakromer/hubot into cupakromer-campfire-play-patch,https://github.com/tombell,https://github.com/balanced/hubot
 hubot,tombell,1,Tom Bell,2013-03-08T23:08:18Z,3,3,6,Update tomdoc formatting,https://github.com/tombell,https://github.com/balanced/hubot
 hubot,tombell,1,Tom Bell,2013-03-08T23:08:41Z,3,9,12,Remove warning and shell play function,https://github.com/tombell,https://github.com/balanced/hubot
-Small Projects,bninja,1,bninja,2013-03-09T03:56:41Z,5,3,8,work out of the box,https://github.com/bninja,https://github.com/balanced/
-Small Projects,bninja,1,andrew,2013-03-09T04:00:56Z,2,0,2,Update README.mkd,https://github.com/bninja,https://github.com/balanced/
+small-projects,bninja,1,bninja,2013-03-09T03:56:41Z,5,3,8,work out of the box,https://github.com/bninja,https://github.com/balanced/
+small-projects,bninja,1,andrew,2013-03-09T04:00:56Z,2,0,2,Update README.mkd,https://github.com/bninja,https://github.com/balanced/
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-10-02T01:02:33Z,43,16,59,Add test marketplaces directly through the API,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-node,matthewfl,1,Matthew Francis-Landau,2013-06-13T01:02:56Z,34,24,58,template seem to be rendering again using same paths from other clients,https://github.com/matthewfl,https://github.com/balanced/balanced-node
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-07-12T00:02:23Z,51,7,58,"Add, remove, and verify bank accounts and cards",https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
@@ -4279,7 +4279,7 @@ balanced-api,matthewfl,1,Matthew Francis-Landau,2013-07-30T22:32:22Z,40,2,42,new
 balanced-api,matthewfl,1,Matthew Francis-Landau,2013-08-13T18:10:06Z,12,30,42,changing address to state and city,https://github.com/matthewfl,https://github.com/balanced/balanced-api
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-08-22T02:10:16Z,0,42,42,Get rid of unused modal,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-10-11T19:37:42Z,17,25,42,Hold test,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-22T05:54:26Z,1,0,1,"Use MAIL_SENDER as an alias from MAIL_FROM
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-22T05:54:26Z,1,0,1,"Use MAIL_SENDER as an alias from MAIL_FROM
 
 Fixes issues #2",https://github.com/mahmoudimus,https://github.com/balanced/
 hubot,External,-1,Mike Skalnik,2011-10-25T22:00:56Z,12,29,41,Merge branch 'master' of git://github.com/github/hubot,https://github.com/skalnik,https://github.com/balanced/hubot
@@ -4313,19 +4313,19 @@ balanced-node,matthewfl,1,Matthew Francis-Landau,2013-06-03T19:43:15Z,32,8,40,ad
 balanced-dashboard,mjallday,1,Marshall Jones,2013-05-23T21:17:31Z,50,51,101,jshints,https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,mjallday,1,Marshall Jones,2013-05-23T21:17:41Z,256,90,346,Merge commit 'c2736f02f697cbef4717b3d467c57887310e7a5e',https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,mjallday,1,Marshall Jones,2013-05-23T21:18:00Z,795,2,797,Merge remote-tracking branch 'origin/master',https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:08:25Z,4,0,4,Create README.md,https://github.com/mahmoudimus,https://github.com/balanced/
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:18:56Z,16,5,21,Merge rentmyprivates and rentmybikes to have one app. Load the configuration from an environment variable on the app,https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:08:25Z,4,0,4,Create README.md,https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:18:56Z,16,5,21,Merge rentmyprivates and rentmybikes to have one app. Load the configuration from an environment variable on the app,https://github.com/mahmoudimus,https://github.com/balanced/
 balanced.github.com,kleinsch,1,Nick Kleinschmidt,2013-06-12T20:26:14Z,20,20,40,Fix contributing link,https://github.com/kleinsch,https://github.com/balanced/balanced.github.com
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:28:07Z,25739,3,25742,"Merge pull request #1 from rloomba/new_project
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T22:28:07Z,25739,3,25742,"Merge pull request #1 from rloomba/new_project
 
 initial commit",https://github.com/mahmoudimus,https://github.com/balanced/
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-06-27T23:22:10Z,31,9,40,fixes #336 - Add sign-in button to start page,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:02:05Z,2,0,2,"Merge pull request #2 from steveklabnik/patch-1
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:02:05Z,2,0,2,"Merge pull request #2 from steveklabnik/patch-1
 
 Add CodeClimate badge.",https://github.com/mahmoudimus,https://github.com/balanced/
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:34:08Z,7,7,14,"some refactoring, including using the appropriate DEFAULT_MAIL_SENDER option",https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:34:08Z,7,7,14,"some refactoring, including using the appropriate DEFAULT_MAIL_SENDER option",https://github.com/mahmoudimus,https://github.com/balanced/
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-07-17T23:01:37Z,20,20,40,jshint,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:53:18Z,1,1,2,"Merge pull request #3 from rloomba/fix-typo
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-23T23:53:18Z,1,1,2,"Merge pull request #3 from rloomba/fix-typo
 
 fixed typo",https://github.com/mahmoudimus,https://github.com/balanced/
 billy,victorlin,1,Victor Lin,2013-08-26T05:47:04Z,38,2,40,Add started at support for creating subscription,https://github.com/victorlin,https://github.com/balanced/billy
@@ -4338,7 +4338,7 @@ active_merchant,External,-1,Nathaniel Talbott,2012-02-28T01:11:37Z,39,0,39,"Merg
 
 Adds support for get_customer_profile_ids to the Authorize.net CIM.",https://github.com/ntalbott,https://github.com/balanced/active_merchant
 billy,pnegahdar,1,Parham Negahdar,2013-05-28T16:30:51Z,1,0,1,Hide pycharm (.idea),https://github.com/pnegahdar,https://github.com/balanced/billy
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-28T17:12:07Z,4,0,4,Initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-05-28T17:12:07Z,4,0,4,Initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
 billy,pnegahdar,1,Parham Negahdar,2013-05-28T17:41:52Z,15,0,15,Outline project,https://github.com/pnegahdar,https://github.com/balanced/billy
 billy,pnegahdar,1,Parham Negahdar,2013-05-28T18:03:41Z,10,0,10,"Moved files, added virtualenv (& requirements.txt)",https://github.com/pnegahdar,https://github.com/balanced/billy
 fakeredis,External,-1,James Saryerwinnie,2012-04-07T18:30:27Z,18,21,39,"Fix formatting/pep8 issues
@@ -4475,7 +4475,7 @@ billy,pnegahdar,1,Parham Negahdar,2013-05-31T18:56:20Z,332,55,387,"Alot of chang
 1) Split invoices to ChargeInvoice and PayoutInvoice
 2) Create payout invoice methods in customer models",https://github.com/pnegahdar,https://github.com/balanced/billy
 billy,pnegahdar,1,Parham Negahdar,2013-05-31T20:07:33Z,58,20,78,Audit events modled out.,https://github.com/pnegahdar,https://github.com/balanced/billy
-Small Projects,victorlin,1,Victor Lin,2013-08-02T05:13:31Z,37,0,37,Fix issue #7 API is not configured before syncdb issue,https://github.com/victorlin,https://github.com/balanced/
+small-projects,victorlin,1,Victor Lin,2013-08-02T05:13:31Z,37,0,37,Fix issue #7 API is not configured before syncdb issue,https://github.com/victorlin,https://github.com/balanced/
 balanced-dashboard,mjallday,1,Marshall Jones,2013-05-31T21:48:53Z,6,4,10,"link to transactions from marketplace selection page, reset marketplace when going page to marketplace selection page",https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,mjallday,1,Marshall Jones,2013-05-31T21:51:07Z,10,11,21,format,https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-08-22T15:14:01Z,37,0,37,Add tests for multiple submission,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
@@ -4783,7 +4783,7 @@ verifying the card"" at the same time:
 https://www.braintreepayments.com/docs/ruby/general/card_verification#credit_card_api
 
 Closes #380",https://github.com/ntalbott,https://github.com/balanced/active_merchant
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T01:59:46Z,19,13,32,does not ask for the card if there is already one on file for the user,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T01:59:46Z,19,13,32,does not ask for the card if there is already one on file for the user,https://github.com/matthewfl,https://github.com/balanced/
 balanced-php,cieplak,1,Patrick Cieplak,2013-07-03T04:42:47Z,28,4,32,fix quickstart,https://github.com/cieplak,https://github.com/balanced/balanced-php
 balanced-docs,nodesocket,1,NodeSocket,2013-06-07T01:05:00Z,15,0,15,"Merge pull request #98 from rserna2010/patch-1
 
@@ -4871,15 +4871,15 @@ balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-09-27T20:47:25Z,24,8,32,"Cl
 Squashed commits:
 [84045ef] jshint
 [5f09f6f] Fix stuffs I broke",https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,mahmoudimus,1,Mahmoud Abdelkader,2013-06-08T02:31:57Z,4,0,4,Initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
+small-projects,mahmoudimus,1,Mahmoud Abdelkader,2013-06-08T02:31:57Z,4,0,4,Initial commit,https://github.com/mahmoudimus,https://github.com/balanced/
 balanced-dashboard,External,-1,Tarun Chaudhry,2013-09-27T21:54:17Z,19,13,32,fixing address string in invoice,https://github.com/tarunc,https://github.com/balanced/balanced-dashboard
 balanced-docs,nodesocket,1,NodeSocket,2013-06-08T02:41:01Z,28,3,31,"Merge pull request #122 from nodesocket/master
 
 Updated FAQs, added new one what does is_identity_verified false mean?",https://github.com/nodesocket,https://github.com/balanced/balanced-docs
-Small Projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:41:25Z,180,0,180,First commit,https://github.com/pnegahdar,https://github.com/balanced/
-Small Projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:43:11Z,4,0,4,"Merge branch 'master' of github.com:balanced/BalBot
+small-projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:41:25Z,180,0,180,First commit,https://github.com/pnegahdar,https://github.com/balanced/
+small-projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:43:11Z,4,0,4,"Merge branch 'master' of github.com:balanced/BalBot
 Not sure why mahmoud didn't make an empty repo...",https://github.com/pnegahdar,https://github.com/balanced/
-Small Projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:45:35Z,4,0,4,More useful docs,https://github.com/pnegahdar,https://github.com/balanced/
+small-projects,pnegahdar,1,Parham Negahdar,2013-06-08T02:45:35Z,4,0,4,More useful docs,https://github.com/pnegahdar,https://github.com/balanced/
 balanced-docs,mahmoudimus,1,Mahmoud Abdelkader,2013-06-10T06:07:10Z,87,0,87,add questions from weekend support,https://github.com/mahmoudimus,https://github.com/balanced/balanced-docs
 balanced-dashboard,mjallday,1,Marshall Jones,2013-06-10T15:32:38Z,20,17,37,fix0r the bugz,https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,mjallday,1,Marshall Jones,2013-06-10T15:38:42Z,5295,1954,7249,Merge branch 'master' into guests,https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
@@ -6093,8 +6093,8 @@ billy,pnegahdar,1,Parham Negahdar,2013-07-20T05:14:14Z,40,31,71,some payout chan
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-04-26T03:22:46Z,10,6,16,Change URL on server-side redirects also,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-07T21:59:45Z,8,8,16,Add auth to routes,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-ruby,remear,1,Ben Mills,2013-07-22T12:28:20Z,1,1,2,Fix failing tests. credit.bank_account is a hash.,https://github.com/remear,https://github.com/balanced/balanced-ruby
-Small Projects,remear,1,Ben Mills,2013-07-22T12:53:24Z,3,3,6,Now runnable in Ruby 2.0 and 1.9,https://github.com/remear,https://github.com/balanced/
-Small Projects,remear,1,Ben Mills,2013-07-22T12:54:49Z,2,0,2,Add security seal to checkout pages,https://github.com/remear,https://github.com/balanced/
+small-projects,remear,1,Ben Mills,2013-07-22T12:53:24Z,3,3,6,Now runnable in Ruby 2.0 and 1.9,https://github.com/remear,https://github.com/balanced/
+small-projects,remear,1,Ben Mills,2013-07-22T12:54:49Z,2,0,2,Add security seal to checkout pages,https://github.com/remear,https://github.com/balanced/
 balanced-docs,mjallday,1,Marshall Jones,2013-07-22T16:36:15Z,5,5,10,"Merge pull request #201 from jbafford/typo-fix
 
 Fix doubled words",https://github.com/mjallday,https://github.com/balanced/balanced-docs
@@ -6537,13 +6537,13 @@ balanced-api,matthewfl,1,Matthew Francis-Landau,2013-08-16T21:19:13Z,12,1,13,tra
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-08-23T21:13:50Z,13,0,13,Add 404 error handling to prevent grey pages on bad route URLs,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-api,matthewfl,1,Matthew Francis-Landau,2013-09-05T22:20:32Z,1,12,13,removing iml files,https://github.com/matthewfl,https://github.com/balanced/balanced-api
 billy,victorlin,1,Victor Lin,2013-09-12T15:14:00Z,13,0,13,Add test for addressing None subscription amount rendered as a string issue,https://github.com/victorlin,https://github.com/balanced/billy
-Small Projects,remear,1,Ben Mills,2013-08-01T19:36:23Z,4,0,4,"Merge pull request #7 from rloomba/patch-1
+small-projects,remear,1,Ben Mills,2013-08-01T19:36:23Z,4,0,4,"Merge pull request #7 from rloomba/patch-1
 
 Update Readme to include live site link",https://github.com/remear,https://github.com/balanced/
-Small Projects,remear,1,Ben Mills,2013-08-01T19:36:48Z,3,3,6,"Merge pull request #8 from remear/master
+small-projects,remear,1,Ben Mills,2013-08-01T19:36:48Z,3,3,6,"Merge pull request #8 from remear/master
 
 Now runnable in Ruby 2.0 and 1.9",https://github.com/remear,https://github.com/balanced/
-Small Projects,remear,1,Ben Mills,2013-08-01T19:37:01Z,2,0,2,"Merge pull request #9 from remear/security-seal
+small-projects,remear,1,Ben Mills,2013-08-01T19:37:01Z,2,0,2,"Merge pull request #9 from remear/security-seal
 
 Add security seal to checkout pages",https://github.com/remear,https://github.com/balanced/
 billy,pnegahdar,1,Parham Negahdar,2013-08-01T19:43:51Z,18,2,20,Added json schema stuff,https://github.com/pnegahdar,https://github.com/balanced/billy
@@ -6566,10 +6566,10 @@ active_merchant,External,-1,Nicholas Hemsley,2011-07-29T07:29:24Z,6,6,12,fix pay
 hubot,External,-1,risk,2011-08-27T21:52:05Z,6,6,12,"fix run() alignment, get shell working",https://github.com/technoweenie,https://github.com/balanced/hubot
 hubot,External,-1,Victor Castell,2011-10-29T13:45:36Z,9,3,12,Workaround for users type parsing,https://github.com/victorcoder,https://github.com/balanced/hubot
 active_merchant,External,-1,John Duff,2012-02-02T12:59:53Z,6,6,12,Change a bunch of checks to use present? instead,https://github.com/jduff,https://github.com/balanced/active_merchant
-Small Projects,mjallday,1,Marshall Jones,2013-08-02T15:04:31Z,37,0,37,"Merge pull request #8 from victorlin/bugfix-api-cfg
+small-projects,mjallday,1,Marshall Jones,2013-08-02T15:04:31Z,37,0,37,"Merge pull request #8 from victorlin/bugfix-api-cfg
 
 Fix issue #7 API is not configured before syncdb issue",https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2013-08-02T15:42:29Z,1,1,2,bumped version number,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-08-02T15:42:29Z,1,1,2,bumped version number,https://github.com/mjallday,https://github.com/balanced/
 balanced-docs,remear,1,Ben Mills,2013-08-02T16:59:58Z,1,0,1,Add contributors file,https://github.com/remear,https://github.com/balanced/balanced-docs
 balanced-docs,remear,1,Ben Mills,2013-08-02T17:57:29Z,1,0,1,"Merge pull request #218 from remear/master
 
@@ -6620,7 +6620,7 @@ balanced-docs,remear,1,Ben Mills,2013-08-05T13:48:51Z,8,3,11,"Merge pull request
 
 Make refund timeline a note",https://github.com/remear,https://github.com/balanced/balanced-docs
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-30T22:54:01Z,11,1,12,Fix issue loading marketplace pages the first time,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T23:55:16Z,1,11,12,fix small issue noticed on deploy to heroku,https://github.com/matthewfl,https://github.com/balanced/
+small-projects,matthewfl,1,Matthew Francis-Landau,2013-05-30T23:55:16Z,1,11,12,fix small issue noticed on deploy to heroku,https://github.com/matthewfl,https://github.com/balanced/
 balanced-node,matthewfl,1,Matthew Francis-Landau,2013-06-04T23:29:12Z,11,1,12,fixing issue with running tests against another host,https://github.com/matthewfl,https://github.com/balanced/balanced-node
 billy,pnegahdar,1,Parham Negahdar,2013-08-05T18:32:30Z,367,342,709,Lots of changing/moving,https://github.com/pnegahdar,https://github.com/balanced/billy
 balanced-ruby,remear,1,Ben Mills,2013-08-05T18:52:03Z,57,15,72,Fix appears_on_statement_as for credits,https://github.com/remear,https://github.com/balanced/balanced-ruby
@@ -6675,7 +6675,7 @@ balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-10-17T21:37:07Z,8,4,12,Punt
 www.balancedpayments.com,External,-1,Tarun Chaudhry,2013-10-18T22:31:22Z,3,9,12,updated the readme,https://github.com/tarunc,https://github.com/balanced/www.balancedpayments.com
 www.balancedpayments.com,External,-1,Tarun Chaudhry,2013-10-21T18:41:00Z,7,5,12,customers video size,https://github.com/tarunc,https://github.com/balanced/www.balancedpayments.com
 balanced-dashboard,External,-1,Tarun Chaudhry,2013-11-22T21:11:13Z,10,2,12,fixed sorting,https://github.com/tarunc,https://github.com/balanced/balanced-dashboard
-Small Projects,remear,1,Ben Mills,2013-08-07T13:46:44Z,219,21678,21897,"Merge pull request #12 from scouttyg/master
+small-projects,remear,1,Ben Mills,2013-08-07T13:46:44Z,219,21678,21897,"Merge pull request #12 from scouttyg/master
 
 Updated rails app to somewhat conform with a working app",https://github.com/remear,https://github.com/balanced/
 balanced-dashboard,mjallday,1,Marshall Jones,2013-08-07T16:10:54Z,2,1,3,"Merge pull request #454 from victorlin/bugfix-load-more
@@ -7841,7 +7841,7 @@ balanced-api,matin,1,Matin Tamizi,2013-09-09T18:17:22Z,12,12,24,consistent namin
 balanced-api,matin,1,Matin Tamizi,2013-09-09T18:28:48Z,8,9,17,clear up naming,https://github.com/matin,https://github.com/balanced/balanced-api
 balanced-api,matin,1,Matin Tamizi,2013-09-09T18:45:54Z,2,2,4,Make naming convention consistent,https://github.com/matin,https://github.com/balanced/balanced-api
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-06-07T23:44:53Z,4,0,4,Resolve promise on create to fix tests,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,External,-1,rloomba,2013-06-08T02:39:49Z,4,0,4,Update Readme to include live site link,https://github.com/rloomba,https://github.com/balanced/
+small-projects,External,-1,rloomba,2013-06-08T02:39:49Z,4,0,4,Update Readme to include live site link,https://github.com/rloomba,https://github.com/balanced/
 www.balancedpayments.com,matthewfl,1,Matthew Francis-Landau,2013-06-10T18:42:09Z,4,0,4,just adding paths for the old static files as there are some resources still using them,https://github.com/matthewfl,https://github.com/balanced/www.balancedpayments.com
 www.balancedpayments.com,matthewfl,1,Matthew Francis-Landau,2013-06-13T18:18:32Z,2,2,4,remove ach debit from the homepage close #9,https://github.com/matthewfl,https://github.com/balanced/www.balancedpayments.com
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-06-14T00:07:04Z,2,2,4,Fix display width for activity pages,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
@@ -8684,16 +8684,16 @@ Fix for tests.",https://github.com/remear,https://github.com/balanced/balanced-i
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-22T02:17:08Z,1,1,2,Fix merge mistake,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-23T01:35:53Z,1,1,2,Switch back to NPM version of grunt-hashres (bug fix was merged in latest release),https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
 balanced-dashboard,kleinsch,1,Nick Kleinschmidt,2013-05-23T01:58:07Z,1,1,2,Fix version of grunt-ember-templates,https://github.com/kleinsch,https://github.com/balanced/balanced-dashboard
-Small Projects,External,-1,Steve Klabnik,2013-05-23T22:41:45Z,2,0,2,"Add CodeClimate badge.
+small-projects,External,-1,Steve Klabnik,2013-05-23T22:41:45Z,2,0,2,"Add CodeClimate badge.
 
 You should be proud. ;)",https://github.com/steveklabnik,https://github.com/balanced/
 www.balancedpayments.com,nodesocket,1,Justin Keller,2013-10-11T00:05:54Z,5,8,13,"Yo dog, I heard you like jpg's instead of pngs.",https://github.com/nodesocket,https://github.com/balanced/www.balancedpayments.com
 www.balancedpayments.com,nodesocket,1,NodeSocket,2013-10-11T00:10:46Z,7,8,15,"Merge pull request #74 from nodesocket/master
 
 Yo dog, I heard you like jpgs instead of pngs.",https://github.com/nodesocket,https://github.com/balanced/www.balancedpayments.com
-Small Projects,External,-1,Ryan Loomba,2013-05-23T23:51:03Z,1,1,2,fixed typo,https://github.com/rloomba,https://github.com/balanced/
-Small Projects,External,-1,Ryan Loomba,2013-05-24T18:42:07Z,1,1,2,fixed fork on github link,https://github.com/rloomba,https://github.com/balanced/
-Small Projects,External,-1,rloomba,2013-05-24T19:15:55Z,1,1,2,"Merge pull request #5 from rloomba/fix-fork-link
+small-projects,External,-1,Ryan Loomba,2013-05-23T23:51:03Z,1,1,2,fixed typo,https://github.com/rloomba,https://github.com/balanced/
+small-projects,External,-1,Ryan Loomba,2013-05-24T18:42:07Z,1,1,2,fixed fork on github link,https://github.com/rloomba,https://github.com/balanced/
+small-projects,External,-1,rloomba,2013-05-24T19:15:55Z,1,1,2,"Merge pull request #5 from rloomba/fix-fork-link
 
 fixed fork on github link",https://github.com/rloomba,https://github.com/balanced/
 www.balancedpayments.com,nodesocket,1,Justin Keller,2013-10-11T00:30:55Z,1,1,2,Good catch @victorlin,https://github.com/nodesocket,https://github.com/balanced/www.balancedpayments.com
@@ -9037,9 +9037,9 @@ balanced-dashboard,mjallday,1,Marshall Jones,2013-11-05T22:35:32Z,24,24,48,"Merg
 Adapt to upcoming invoicing API changes",https://github.com/mjallday,https://github.com/balanced/balanced-dashboard
 hubot,External,-1,Excedrin,2011-10-28T09:16:28Z,1,0,1,"Enable color stripping so that regexes for commands don't need to handle it. ex. ""bot: he^C2^Olp"" still matches help regex despite invisible characters. This is useful if you use hubot with bitlbee to connect to AIM, MSN, YM etc with OTR, since bitlbee OTR makes text red when it's encrypted.",https://github.com/Excedrin,https://github.com/balanced/hubot
 hubot,External,-1,David Logie,2011-10-29T08:52:29Z,1,0,1,Add support for secure IRC connections.,https://github.com/djl,https://github.com/balanced/hubot
-Small Projects,mjallday,1,Marshall Jones,2013-11-06T18:24:56Z,60,0,60,Initial commit,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2013-11-06T18:33:40Z,46,2,48,Update README.md,https://github.com/mjallday,https://github.com/balanced/
-Small Projects,mjallday,1,Marshall Jones,2013-11-06T18:34:53Z,33,0,33,Create CONTRIBUTING.md,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-11-06T18:24:56Z,60,0,60,Initial commit,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-11-06T18:33:40Z,46,2,48,Update README.md,https://github.com/mjallday,https://github.com/balanced/
+small-projects,mjallday,1,Marshall Jones,2013-11-06T18:34:53Z,33,0,33,Create CONTRIBUTING.md,https://github.com/mjallday,https://github.com/balanced/
 hubot,External,-1,Matt McCormick,2011-11-01T18:21:44Z,0,1,1,"Removing <show>chat</show> stanza to prevent Google Talk from setting default Hubot status to ""Chatty"".",https://github.com/mbmccormick,https://github.com/balanced/hubot
 hubot,External,-1,Arttu Tervo,2011-11-09T11:03:46Z,1,0,1,Don't listen hubot's own messages with Flowdock adapter.,https://github.com/arttu,https://github.com/balanced/hubot
 hubot,External,-1,Artem Sapegin,2011-12-15T10:47:45Z,0,1,1,Remove debug output.,https://github.com/sapegin,https://github.com/balanced/hubot

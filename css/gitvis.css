@@ -201,7 +201,3 @@ path {
 .heatMapCell:hover{
   fill-opacity: 1.0;
 }
-
-#heatmap-div{
-  margin: 0 auto;
-}

@@ -15,7 +15,23 @@ var cellLimit = 60;
 var buckets = 9;
 var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
-var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
+var usernameNameObj = {External: "Open Source", 
+                      atmos: "Corey Donohoe",
+                      bninja: "Andrew", 
+                      cieplak: "Patrick Cieplak",
+                      daliwali: "Dali Zheng",
+                      jkwade: "Jareau Wade", 
+                      kleinsch: "Nick Kleinschmidt",
+                      mahmoudimus: "Mahmoud Abdelkader", 
+                      matin: "Matin Tamizi",
+                      matthewfl: "Matthew Francis",
+                      matin: "Matin Tamizi", 
+                      mjallday: "Marshall Jones", 
+                      nodesocket: "Justin Keller",
+                      pnegahdar: "Parham Negahdar",
+                      remear: "Ben Mills",
+                      tombell: "Tom Bell",
+                      victorlin: "Victor Lin"};
 
 // Get Choice Function
 
@@ -533,9 +549,11 @@ function renderTimeBrush() {
 
 
 function renderFirstSelection(dataobj){
-    if(!firstClick) { return; }
-    
+
     var timeData = dataobj.first_timeline_data;
+    if (!timeData) {
+        timeData = new Array();
+    }
 
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassFirst')
@@ -585,9 +603,11 @@ function renderFirstSelection(dataobj){
 
 
 function renderSecondSelection(dataobj){
-    if(!secondClick) { return; }
     
     var timeData = dataobj.second_timeline_data;
+    if (!timeData) {
+        timeData = new Array();
+    }
 
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassSecond')
@@ -694,7 +714,7 @@ function renderRepoMap(dataobj){
         })
         .on("click", function(d){
             repoSelected = d.key;
-            if(firstClick == 'repo' && secondClick) {return;}
+            if(firstClick == 'repo' && secondClick) {secondClick = null; }
             if(!firstClick) {firstClick = 'repo';}
             if(firstClick != 'repo') {secondClick = 'repo';}
             brushed();
@@ -765,7 +785,9 @@ function  renderUserMap(dataobj){
         })
         .on("click", function(d){
             userSelected = d.key;
-            if(firstClick == 'user' && secondClick) {return;}
+            if(firstClick == 'user' && secondClick) {
+                secondClick = null;
+            }
             if(!firstClick) {firstClick = 'user';}
             if(firstClick != 'user') {secondClick = 'user';}
             brushed();
