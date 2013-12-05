@@ -4,6 +4,7 @@ var userSelected = null;
 var firstClick = null;
 var secondClick = null;
 var choiceSelected = 'commits';
+var sizeSelected = 'commits';
 
 // Data Variables
 var rawdata = null;
@@ -13,9 +14,46 @@ var extentOfDays = [];
 var heatMapPadding = 100;
 var cellLimit = 60;
 var buckets = 9;
-var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+var buckets_tree = 7;
+// var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
 
-var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
+var nameMapperObj = {"External": "Open Source", 
+                    "atmos": "Corey Donohoe",
+                    "bninja": "Andrew", 
+                    "cieplak": "Patrick Cieplak",
+                    "daliwali": "Dali Zheng",
+                    "jkwade": "Jareau Wade", 
+                    "kleinsch": "Nick Kleinschmidt",
+                    "mahmoudimus": "Mahmoud Abdelkader", 
+                    "matin": "Matin Tamizi",
+                    "matthewfl": "Matthew Francis",
+                    "matin": "Matin Tamizi", 
+                    "mjallday": "Marshall Jones", 
+                    "nodesocket": "Justin Keller",
+                    "pnegahdar": "Parham Negahdar",
+                    "remear": "Ben Mills",
+                    "tombell": "Tom Bell",
+                    "victorlin": "Victor Lin",
+                    "balanced-dashboard": "dashboard",
+                    "balanced-docs": "balanced-docs",
+                    "www.balancedpayments.com": "main-website",
+                    "small-projects": "small-projects",
+                    "active_merchant": "active_merchant",
+                    "billy": "billy",
+                    "balanced-node": "balanced-node",
+                    "balanced-java": "balanced-java",
+                    "balanced-php": "balanced-php",
+                    "balanced-ruby": "balanced-ruby",
+                    "balanced-csharp": "balanced-csharp",
+                    "balanced-api": "balanced-api",
+                    "hubot": "hubot",
+                    "fakeredis": "fakeredis",
+                    "balanced.github.com": "github-pages",
+                    "balanced-js": "balanced-js",
+                    "balanced-python": "balanced-python",
+                    "balanced-android": "balanced-android",
+                    "status.balancedpayments.com": "status-website",
+                    "balanced-ios": "balanced-ios"};
 
 // Get Choice Function
 
@@ -26,6 +64,12 @@ function getChoice(){
     if(choiceSelected == 'commits'){ return function(d) {return d.values.count;}}
 }
 
+function getChoiceSize(){
+    if(sizeSelected == 'total'){ return function(d) {return d.values.total;}}
+    if(sizeSelected == 'additions'){ return function(d) {return d.values.additions;}}
+    if(sizeSelected == 'deletions'){ return function(d) {return d.values.deletions;}}
+    if(sizeSelected == 'commits'){ return function(d) {return d.values.count;}}
+}
 
 function getChoiceValue(d){
     if(choiceSelected == 'total'){ return d.total;}
@@ -168,6 +212,9 @@ function init(){
         .value(getChoice())
         .round(false);
 
+    zscaleRepoMap = d3.scale.quantile()
+        .range(colorbrewer.BuGn[buckets_tree]);
+
     // ----------------------------- //
     // ----------------------------- //
 
@@ -184,6 +231,9 @@ function init(){
         .children(function(d) { return d.values; })
         .value(getChoice())
         .round(false);
+
+    zscaleUserMap = d3.scale.quantile()
+        .range(colorbrewer.Blues[buckets_tree]);
 
     // ----------------------------- //
     // ----------------------------- //
@@ -204,7 +254,7 @@ function init(){
         
     yScaleHeatMap = d3.scale.ordinal();
     zscaleHeatMap = d3.scale.quantile()
-        .range(colors);
+        .range(colorbrewer.YlGnBu[9]);
 
     yAxisHeatMap = d3.svg.axis()
         .orient('left')
@@ -242,6 +292,7 @@ function init(){
     format = d3.format("0,000");
     d3.select('#select-score').property('checked', true);
     d3.selectAll(".mode-radio").on("change", function() { radioUpdate(this.value);});
+    d3.selectAll(".size-radio").on("change", function() { radioUpdateSize(this.value);});
 
 
     // Update Page Function
@@ -254,9 +305,9 @@ function update(){
     d3.csv('data/balancedDataFull.csv', function(d) {
          //repo  username  type  name  timestamp additions deletions total message userURL repoURL
          return {
-           repo: d.repo,
+           repo: nameMapperObj[d.repo],
            timestamp: d.timestamp.substring(0,10),
-           username: d.username,
+           username: nameMapperObj[d.username],
            ietype: +d.type,
            realname: d.name,
            additions: +d.additions,
@@ -533,9 +584,11 @@ function renderTimeBrush() {
 
 
 function renderFirstSelection(dataobj){
-    if(!firstClick) { return; }
-    
+
     var timeData = dataobj.first_timeline_data;
+    if (!timeData) {
+        timeData = new Array();
+    }
 
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassFirst')
@@ -585,9 +638,11 @@ function renderFirstSelection(dataobj){
 
 
 function renderSecondSelection(dataobj){
-    if(!secondClick) { return; }
     
     var timeData = dataobj.second_timeline_data;
+    if (!timeData) {
+        timeData = new Array();
+    }
 
     // Add the svg and bar elements
     timeSvgClassSelect = timeSvg.selectAll('.timeSvgClassSecond')
@@ -644,6 +699,9 @@ function renderRepoMap(dataobj){
     
     var repoData = repoTreeMap.nodes(dataobj.repo_map_data)
 
+    zscaleRepoMap
+        .domain([0, buckets_tree-1, d3.max(dataobj.repo_map_data.values.map(getChoiceSize()))])
+
     nodelinkRepo = repoMapDiv.selectAll(".nodelink")
         .data(repoData)
         .enter()
@@ -673,7 +731,7 @@ function renderRepoMap(dataobj){
         .attr("class", "node")
         .transition().call(position)
         .attr("stroke", "#FFF")
-        .style("background", function(d) { return d.values ? color(d.key) : null; });
+        .style("background", function(d) { return d.values ? zscaleRepoMap(getChoiceSize()(d)) : null; });
     
     repoMapDiv.selectAll(".node")
         .data(repoData)
@@ -694,7 +752,7 @@ function renderRepoMap(dataobj){
         })
         .on("click", function(d){
             repoSelected = d.key;
-            if(firstClick == 'repo' && secondClick) {return;}
+            if(firstClick == 'repo' && secondClick) {secondClick = null; }
             if(!firstClick) {firstClick = 'repo';}
             if(firstClick != 'repo') {secondClick = 'repo';}
             brushed();
@@ -714,7 +772,11 @@ function  renderUserMap(dataobj){
     
     // Usermap Render Function
     var userData = userTreeMap.nodes(dataobj.user_map_data)
-    
+
+    zscaleUserMap
+        .domain([0, buckets_tree-1, d3.max(dataobj.user_map_data.values.map(getChoiceSize()))])
+    // console.log(zscaleUserMap.domain())
+
     nodelinkUser = userMapDiv.selectAll(".nodelink")
         .data(userData)
         .enter()
@@ -744,7 +806,7 @@ function  renderUserMap(dataobj){
         .attr("class", "node")
         .transition().call(position)
         .attr("stroke", "#FFF")
-        .style("background", function(d) { return d.values ? color(d.key) : null; });
+        .style("background", function(d) { return d.values ? zscaleUserMap(getChoiceSize()(d)) : null; });
 
     userMapDiv.selectAll(".node")
         .data(userData)
@@ -765,7 +827,9 @@ function  renderUserMap(dataobj){
         })
         .on("click", function(d){
             userSelected = d.key;
-            if(firstClick == 'user' && secondClick) {return;}
+            if(firstClick == 'user' && secondClick) {
+                secondClick = null;
+            }
             if(!firstClick) {firstClick = 'user';}
             if(firstClick != 'user') {secondClick = 'user';}
             brushed();
@@ -805,7 +869,7 @@ function renderHeatMap(dataobj) {
 
     // Define the Color Scale
     zscaleHeatMap
-        .domain([1, buckets - 1, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
+        .domain([0, buckets - 1, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
     // console.log(zscaleHeatMap.domain());
     
     // YAxis Update
@@ -855,6 +919,11 @@ function renderHeatMap(dataobj) {
         });
 }
 
+
+function radioUpdateSize(dataInput){
+    sizeSelected = dataInput;
+    radioUpdate(choiceSelected);
+}
 
 function radioUpdate(dataInput){
     choiceSelected = dataInput;
