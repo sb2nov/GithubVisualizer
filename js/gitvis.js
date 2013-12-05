@@ -5,8 +5,12 @@ var firstClick = null;
 var secondClick = null;
 var choiceSelected = 'commits';
 
+// Data Variables
 var rawdata = null;
 var uniTimeSeries = null;
+var numOfDays = 0;
+var extentOfDays = [];
+var heatMapPadding = 0;
 
 var usernameNameObj = {External: "Open Source", bninja: "Andrew", dmdj03: "Damon Chin", jkwade: "Jareau Wade", mahmoudimus: "Mahmoud Abdelkader", matin: "Matin Tamizi", mjallday: "Marshall Jones", msherry: "Marc Sherry", timnguyen: "Tim Nguyen"};
 
@@ -17,6 +21,14 @@ function getChoice(){
     if(choiceSelected == 'additions'){ return function(d) {return d.values.additions;}}
     if(choiceSelected == 'deletions'){ return function(d) {return d.values.deletions;}}
     if(choiceSelected == 'commits'){ return function(d) {return d.values.count;}}
+}
+
+
+function getChoiceValue(d){
+    if(choiceSelected == 'total'){ return d.total;}
+    if(choiceSelected == 'additions'){ return d.additions;}
+    if(choiceSelected == 'deletions'){ return d.deletions;}
+    if(choiceSelected == 'commits'){ return d.count;}
 }
 
 
@@ -170,7 +182,32 @@ function init(){
     // ----------------------------- //
 
     // HeatMap Initialization
+    heatMapDiv = d3.select("#heatmap-div")
+        .style("position", "relative")
+        .style("width", width + margin.left + margin.right + "px")
+        .style("height", height_single + margin.top + margin.bottom + "px")
+        .style("top", margin.top + "px")
+        .style("left", margin.left + "px");
+    
+    heatMapSvg = heatMapDiv.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr("height", height_single + margin.top + margin.bottom)
+        .attr('class', 'heatSvgClass')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        
+    yScaleHeatMap = d3.scale.ordinal();
+    zscaleHeatMap = d3.scale.linear()
+        .range(['#FFF7BC', '#D95F0E']);
 
+    yAxisHeatMap = d3.svg.axis()
+        .scale(yScaleHeatMap)
+        .orient('left')
+        .tickSize(5,1)
+        .tickPadding(8);
+
+    heatSvgYaxis = heatMapSvg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + heatMapPadding + "," + 0 + ")")
 
     // ----------------------------- //
     // ----------------------------- //
@@ -204,6 +241,7 @@ function init(){
     // Update Page Function
     update();
 }
+
 
 function update(){
   
@@ -248,8 +286,16 @@ function filterData(extentVals){
         .rollup(rollLeaves)
         .entries(filteredData);
 
+    if(allChartTimeLineNest.length > 0)
+        extentOfDays = [allChartTimeLineNest[0].key, allChartTimeLineNest[allChartTimeLineNest.length-1].key];
+    else
+        extentOfDays = extentVals;
+
+    numOfDays = moment(extentOfDays[1]).diff(extentOfDays[0], 'days') + 1;
+
     repoMapDataNest = null;
     userMapDataNest = null;
+    heatMapDataNest = null;
     secondChartTimeLineNest = null;
     thirdChartTimeLineNest = null;
 
@@ -261,6 +307,13 @@ function filterData(extentVals){
             
         userMapDataNest = d3.nest()
             .key(function(d) {return d.username;})
+            .rollup(rollLeaves)
+            .entries(filteredData);
+        
+        heatMapDataNest = d3.nest()
+            .key(function(d) {return d.repo;})
+            .key(function(d) { return determineScale(d.timestamp);})
+            .sortKeys(compareDates)
             .rollup(rollLeaves)
             .entries(filteredData);
     }
@@ -333,6 +386,7 @@ function filterData(extentVals){
     objData['user_map_data'] = userMapDataNest;
     
     //Heatmap Data Filters
+    objData['heat_map_data'] = heatMapDataNest;
     
     return objData;
 }
@@ -358,6 +412,7 @@ function render_routine(dataobj){
     renderUserMap(dataobj);
     renderFirstSelection(dataobj);
     renderSecondSelection(dataobj);
+    renderHeatMap(dataobj);
 }
 
 function renderTimeLine(dataobj){
@@ -705,6 +760,83 @@ function  renderUserMap(dataobj){
 }
 
 
+function renderHeatMap(dataobj) {
+
+    var data = dataobj.heat_map_data;
+    if (!data) { return; }
+
+    var yAxisData = data.map(function(d) {return d.key;});
+
+    // console.log(yAxisData)
+    // var totalSteps = moment(extentOfDays[1]).diff(extentOfDays[0],'months');
+    // var cellSize = computeCellSize(totalSteps, data.length, heatMapPadding);
+
+    cellSize = 17;
+    // console.log(data);
+    var heatMapData = fillMissingData(data, heatMapPadding, cellSize);
+    // console.log(heatMapData);
+
+    var heatMapWidth = heatMapData[0].length * cellSize;
+    var heatMapHeight = data.length * cellSize;
+
+    // Y-Axis Scale
+    yScaleHeatMap
+        .domain(yAxisData)
+        .rangeBands([heatMapPadding, heatMapHeight-heatMapPadding]);
+
+    // Define the Color Scale
+    zscaleHeatMap
+        .domain([0, d3.max(heatMapData.map(function(d) { return d3.max(d, function(e) {return getChoiceValue(e); })}))]);
+    // console.log(zscaleHeatMap.domain());
+    
+    // YAxis Update
+        
+    heatSvgYaxis.transition().call(yAxisHeatMap);
+
+    // Row Stuff
+    heatMapRow = heatMapSvg.selectAll(".heatMapRow").data(heatMapData);
+    
+    heatMapRow.enter()
+        .append("svg:g")
+        .attr("class", "heatMapRow");
+
+    heatMapRow.exit().remove();
+    heatMapRow.transition();
+    
+    heatMapCell = heatMapRow.selectAll('.heatMapCell').data(function(d) { return d;} )
+    
+    heatMapCell.exit().remove();
+    heatMapCell.enter()
+        .append('svg:rect')
+        .attr('class', 'heatMapCell');
+    
+    heatMapCell
+        .attr("x", function(d) { return d.x; })
+        .attr("y", function(d) { return (yScaleHeatMap(d.key)); })
+        .attr("width", function(d) { return d.width; })
+        .attr("height", function(d) { return d.height; })
+        .style("stroke", '#FFF')
+        .style("fill", function(d){ return zscaleHeatMap(getChoiceValue(d)); });
+
+    heatMapCell
+        .on("mouseover", function(d){
+            tooltip_div       
+                .style("visibility", "visible")
+                .transition().duration(150)
+                .style("opacity", 1);
+                var putImageInTooltip = function() {
+                    tooltip_div.html(tooltipStringHeat(d));    
+                }
+                putImageInTooltip();
+        })
+        .on("mouseout",function(){
+            tooltip_div.transition()      
+                .duration(200)
+                .style("opacity", 0);
+        });
+}
+
+
 function radioUpdate(dataInput){
     choiceSelected = dataInput;
 
@@ -733,6 +865,10 @@ function tooltipString(d){
     return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
+function tooltipStringHeat(d){
+    
+    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
+}
 
 function compareDates(a,b) {
             var a_date = new Date(Date.parse(a));
@@ -761,6 +897,187 @@ function timeStampDiff(dateArray){
     var diffInMilliseconds = dateArray[1].getTime() - dateArray[0].getTime();
     // days
     return Math.ceil(diffInMilliseconds / 1000 / 60 / 60 / 24);
+}
+
+function determineScale(timestamp) {
+    //var startDate = moment(startDate);
+    //var endDate = moment(endDate);
+    //console.log(numOfDays);
+
+    if(numOfDays < 40) {
+        //console.log(timestamp);
+        return timestamp;
+    }
+    else if(numOfDays/7 < 40) {
+        timestamp = new Date(timestamp);
+        //console.log(d3.time.day.offset(timestamp, (-1)*timestamp.getDay()));
+        return d3.time.day.offset(timestamp, (-1) * timestamp.getDay()).toISOString().substring(0,10);
+    }
+    else {
+        return timestamp.substring(0,7) + "-01";
+    }
+}
+
+function fillMissingData(data, padding, cellSize) {
+     //console.log(numOfDays);
+     if(numOfDays < 40){
+         return fillDaysWeeks(data, padding, cellSize, true);
+     } else if(numOfDays/7 <40) {
+         return fillDaysWeeks(data, padding, cellSize, false);
+     } else {
+        return fillMonths(data, padding, cellSize);
+     }
+}
+
+function fillDaysWeeks(inputData, padding, cellSize, daily) {
+    
+    var startDate = null;
+    var totalSteps;
+    if(daily) {
+        startDate = extentOfDays[0];
+        totalSteps = numOfDays;
+        size = 1;
+        console.log("Daily : " + startDate);
+    }else{
+        var tmpDate = new Date(extentOfDays[0]);
+        startDate = d3.time.day.offset(tmpDate, (-1) * tmpDate.getDay()).toISOString().substring(0,10)
+        totalSteps = Math.ceil(numOfDays/7);
+        size = 7;
+        console.log("Weekly: " + startDate);
+    }
+
+    var svgHeight = inputData.length*cellSize + padding*2;
+    var svgWidth = totalSteps*cellSize + padding*2;
+
+    var data = new Array();
+    var xcount = totalSteps;
+    var ycount = inputData.length;
+    var svgHeatMapItemWidth = (svgWidth - padding*2) / xcount;
+    var svgHeatMapItemHeight = (svgHeight - padding*2) / ycount;
+    var startX = padding;
+    var startY = (svgHeight-padding) / 2;
+    var stepX = svgHeatMapItemWidth;
+    var stepY = svgHeatMapItemHeight;
+    var xpos = startX;
+    var ypos = startY;
+    var newValue = 0;
+    var k = 0;
+
+    for (var i = 0; i < ycount; i++)
+    {
+        data.push(new Array());
+        var currDate = startDate;
+        k = 0;
+        for (var j = 0; j < xcount; j++)
+        {
+            if(k < inputData[i].values.length && inputData[i].values[k].key == currDate) {
+                data[i].push({ 
+                    time: inputData[i].values[k].key,
+                    key: inputData[i].key, 
+                    count: inputData[i].values[k].values.count,
+                    total: inputData[i].values[k].values.total,
+                    additions: inputData[i].values[k].values.additions,
+                    deletions: inputData[i].values[k].values.deletions,
+                    width: svgHeatMapItemWidth,
+                    height: svgHeatMapItemHeight,
+                    x: xpos,
+                    y: ypos,
+                });
+                k++;
+            } 
+            else {
+                data[i].push({ 
+                    time: currDate,
+                    key: inputData[i].key, 
+                    count: 0,
+                    additions: 0,
+                    deletions: 0,
+                    total: 0,
+                    width: svgHeatMapItemWidth,
+                    height: svgHeatMapItemHeight,
+                    x: xpos,
+                    y: ypos,
+                });
+            }
+            currDate = d3.time.day.offset(new Date(currDate), size).toISOString().substring(0,10);
+            xpos += stepX;
+        }
+        xpos = startX;
+        ypos += stepY;
+    }
+
+    //console.log(data);
+    return data;
+}
+
+
+function fillMonths(inputData, padding, cellSize) {
+    //console.log(inputData);
+    
+    var totalSteps = moment(extentOfDays[1].substring(0,7)).diff(extentOfDays[0].substring(0,7),'months') + 1;
+    
+    var svgHeight = inputData.length*cellSize + padding*2;
+    var svgWidth = totalSteps*cellSize + padding*2;
+
+    var data = new Array();
+    var xcount = totalSteps;
+    var ycount = inputData.length;
+    var svgHeatMapItemWidth = (svgWidth - padding*2) / xcount;
+    var svgHeatMapItemHeight = (svgHeight - padding*2) / ycount;
+    var startX = padding;
+    var startY = (svgHeight-padding) / 2;
+    var stepX = svgHeatMapItemWidth;
+    var stepY = svgHeatMapItemHeight;
+    var xpos = startX;
+    var ypos = startY;
+    var newValue = 0;
+    var k = 0;
+    
+    for (var i = 0; i < ycount; i++)
+    {
+        data.push(new Array());
+        var currDate = extentOfDays[0].substring(0,7) + "-01";
+        k=0;
+        for (var j = 0; j < xcount; j++)
+        {
+            if(k < inputData[i].values.length && inputData[i].values[k].key == currDate) {
+                data[i].push({ 
+                    time: inputData[i].values[k].key,
+                    key: inputData[i].key, 
+                    count: inputData[i].values[k].values.count,
+                    total: inputData[i].values[k].values.total,
+                    additions: inputData[i].values[k].values.additions,
+                    deletions: inputData[i].values[k].values.deletions,
+                    width: svgHeatMapItemWidth,
+                    height: svgHeatMapItemHeight,
+                    x: xpos,
+                    y: ypos,
+                });
+                k++;
+            } 
+            else {
+                data[i].push({ 
+                    time: currDate,
+                    key: inputData[i].key, 
+                    count: 0,
+                    additions: 0,
+                    deletions: 0,
+                    total: 0,
+                    width: svgHeatMapItemWidth,
+                    height: svgHeatMapItemHeight,
+                    x: xpos,
+                    y: ypos,
+                });
+            }
+            currDate = moment(currDate).add('months',1).toISOString().substring(0,10);
+            xpos += stepX;
+        }
+        xpos = startX;
+        ypos += stepY;
+    }
+
+    //console.log(data);
+    return data;
 }
 
 // Done
