@@ -193,7 +193,9 @@ path {
 }
 
 .heatMapCell{
-  fill-opacity: 0.8;
+  fill-opacity: 0.9;
+  stroke: #ffffd9;
+  stroke-width:2px;
 }
 
 .heatMapCell:hover{
