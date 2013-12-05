@@ -203,7 +203,8 @@ function init(){
         .style("position", "relative")
         .style("width", width_half + margin.left + margin.right + "px")
         .style("height", (height/3) + margin.top + margin.bottom + "px")
-        .style("top", margin.top + "px");
+        .style("top", margin.top + "px")
+        .style('border', '1px solid');
 
     repoTreeMap = d3.layout.treemap()
         .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
@@ -223,7 +224,8 @@ function init(){
         .style("position", "relative")
         .style("width", width_half + margin.left + margin.right + "px")
         .style("height", (height/3) + margin.top + margin.bottom + "px")
-        .style("top", margin.top + "px");
+        .style("top", margin.top + "px")
+        .style('border', '1px solid');
 
     userTreeMap = d3.layout.treemap()
         .size([(width_half + margin.left + margin.right), ((height/3) + margin.top + margin.bottom)])
@@ -270,7 +272,7 @@ function init(){
 
     // Tooltip Initialization
     tooltip_div = d3.select("body").append("div")   
-        .attr("class", "tooltip")
+        .attr("class", "Mytooltip")
         .attr('id', 'tooltip')
         .style("visibility", "hidden");
 
@@ -950,12 +952,12 @@ function brushed(){
 
 
 function tooltipString(d){
-    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
+    return "<b class='Mytooltip Mytooltitle'>" + d.key + "</b><div>" + "<table ><tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.values.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.values.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.values.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.values.deletions) + "</td></tr></table></div>";
 }
 
 function tooltipStringHeat(d){
     
-    return "<b class='tooltip tooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
+    return "<b class='Mytooltip Mytooltitle'>" + d.key + "</b><div>"+ "<table >"+ "<tr><td><b>Date</b></td><td style='text-align: right'>" + d.time + "</td></tr>" + "<tr><td><b>Commits</b></td><td style='text-align: right'>" + format(d.count) + "</td></tr>" + "<tr><td><b>Total</b></td><td style='text-align: right'>" + format(d.total) + "</td></tr>" + "<tr><td><b>Additions</b></td><td style='text-align: right'>" + format(d.additions) + "</td></tr>" + "<tr><td><b>Deletions</b></td><td style='text-align: right'>" + format(d.deletions) + "</td></tr></table></div>";
 }
 
 function compareDates(a,b) {

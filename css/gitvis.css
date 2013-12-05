@@ -41,15 +41,18 @@ h1 {
   cursor: default;
 }
 
-.button-form {
-  margin-bottom:12px;
-  font-size: 100%;
+.my-button-form, .my-button-form td{
+  margin-bottom:4px;
+  font-size: 12px;
   background: #eee;
 }
 
-.button-form td{
-  font-size: 13px;
-}
+.my-button-form label{
+  font-size: 12px;
+  padding-left: 5px;
+  padding-right: 5px;
+} 
+
 
 #wrap {
   position: relative;
@@ -59,12 +62,13 @@ h1 {
 }
 
 .node {
-  border: solid 1px white;
+  border: solid 1px #666;
   font: 13px sans-serif;
   color: white;
   line-height: 12px;
   overflow: hidden;
   position: absolute;
+  opacity: 0.75;
   text-indent: 2px;
   word-wrap:break-word;
   cursor: pointer;
@@ -81,10 +85,11 @@ h1 {
 
 .node:hover {
   text-decoration:underline;
-
+  z-index: 5;
+  opacity: 1.0;
 }
 
-div.tooltip {
+div.Mytooltip {
    position: absolute;
    text-align: center;           
    padding: 3px;
@@ -96,18 +101,19 @@ div.tooltip {
    font-size: 8px;
    min-width: 100px;
    max-width: 220px;
+   z-index: 1000;
 }
 
-div.tooltip td{
+div.Mytooltip td{
    text-align: left;
    font-size: 10px;
 }
 
-div.tooltip table{
+div.Mytooltip table{
   width:100%;
 }
 
-.tooltip.tooltitle{
+.Mytooltip.Mytooltitle{
     font-size: 11px;
     text-align: center;
 }
@@ -193,7 +199,7 @@ path {
 }
 
 .heatMapCell{
-  fill-opacity: 0.9;
+  fill-opacity: 0.7;
   stroke: #ffffd9;
   stroke-width:2px;
 }
