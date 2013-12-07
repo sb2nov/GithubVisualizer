@@ -326,6 +326,10 @@ function init(){
     heatSvgXaxis = heatMapSvg.append('svg:g')
         .attr('id', 'heatSvgXAxisID')
         .attr("class", "axis");
+        
+    heatSvgLegend = heatMapSvg.append('svg:g')
+        .attr('class', 'heatLegendSvgClass')
+        .attr('id', 'heatLegendSvgID');
 
     // ----------------------------- //
     // ----------------------------- //
@@ -945,6 +949,11 @@ function renderHeatMap(dataobj) {
 
     console.log(xAxisData);
 
+    // X-Axis Scale
+    xScaleHeatMap
+        .domain(xAxisData)
+        .rangePoints([0, heatMapWidth]);
+
     // Y-Axis Scale
     yScaleHeatMap
         .domain(yAxisData)
@@ -1016,6 +1025,52 @@ function renderHeatMap(dataobj) {
                 .duration(200)
                 .style("opacity", 0);
         });
+
+
+    var legendWidth = 2 * cellSize;
+
+    heatMapLegend = heatSvgLegend.selectAll('.heatLegendElement').data([0].concat(zscaleHeatMap.quantiles()), function(d) { return d; });
+    
+    heatMapLegend.exit().remove();
+
+    heatMapLegend
+        .enter()
+            .append('g')
+        .attr('class', 'heatLegendElement')
+        .each(function(d){
+            d3.select(this)
+                .append('rect')
+                    .attr('class', 'heatLegendRect');
+        })
+        .each(function(d){
+            d3.select(this)
+                .append('text')
+                    .attr('class', 'heatLegendText');
+        });
+    
+    heatMapLegend.transition();
+    
+    heatMapLegendRect = heatSvgLegend.selectAll('.heatLegendRect').data([0].concat(zscaleHeatMap.quantiles()), function(d) { return d; });
+    
+    heatMapLegendText = heatSvgLegend.selectAll('.heatLegendText').data([0].concat(zscaleHeatMap.quantiles()), function(d) { return d; });
+    
+    heatMapLegendRect.exit().remove();
+    heatMapLegendText.exit().remove();
+    heatMapLegendRect.transition();
+    heatMapLegendText.transition();
+    
+    heatMapLegendRect
+        .attr("x", function(d, i) { return heatMapPadding + legendWidth * i; })
+        .attr("y", heatMapHeight + 2.5*cellSize)
+        .attr("width", legendWidth)
+        .attr("height", cellSize)
+        .style("fill", function(d){ return zscaleHeatMap(d); });
+
+    heatMapLegendText
+        .text(function(d) { return "≥ " + Math.round(d); })
+        .attr("x", function(d, i) { return heatMapPadding + legendWidth * i; })
+        .attr("y", heatMapHeight + 4*cellSize);
+
 }
 
 
