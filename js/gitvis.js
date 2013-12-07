@@ -192,6 +192,9 @@ function init(){
     timeSvgXaxis = timeSvg.append('svg:g')
         .attr('transform', 'translate('+ (0) +','+ height_single+')')
         .attr('class', 'axis')
+    
+    timeLineLegendSvg = d3.select('#time-line-legend').append('svg')
+        .attr('height', 60 + "px")
 
     // ----------------------------- //
     // ----------------------------- //
@@ -422,6 +425,7 @@ function filterData(extentVals){
     heatMapDataNest = null;
     secondChartTimeLineNest = null;
     thirdChartTimeLineNest = null;
+    timeLineLegendData = [{key:'Balanced', colorfill:'SteelBlue'}];
 
     if(!firstClick){
         repoMapDataNest = d3.nest()
@@ -468,6 +472,8 @@ function filterData(extentVals){
            .sortKeys(compareDates)
            .rollup(rollLeaves)
            .entries(filterFirstClickData);
+        
+        timeLineLegendData.push({key:repoSelected, colorfill:'Lightpink'});
 
     }
     
@@ -497,6 +503,8 @@ function filterData(extentVals){
            .sortKeys(compareDates)
            .rollup(rollLeaves)
            .entries(filterFirstClickData);
+           
+        timeLineLegendData.push({key:userSelected, colorfill:'Lightpink'});
     }
 
     if(secondClick){
@@ -507,6 +515,10 @@ function filterData(extentVals){
             .sortKeys(compareDates)
             .rollup(rollLeaves)
             .entries(filterSecondClickData);
+        
+        var selectEle = secondClick=='user' ? userSelected : repoSelected;
+        
+        timeLineLegendData.push({key: selectEle, colorfill:'#7FFFD4'});
     }
 
     repoMapDataNest = {values: repoMapDataNest, key:'repoMap'};
@@ -517,6 +529,7 @@ function filterData(extentVals){
     objData['all_timeline_data'] = allChartTimeLineNest;
     objData['first_timeline_data'] = secondChartTimeLineNest;
     objData['second_timeline_data'] = thirdChartTimeLineNest;
+    objData['time_legend_data'] = timeLineLegendData;
 
     // Treemap Data Filters
     objData['repo_map_data'] = repoMapDataNest;
@@ -609,6 +622,38 @@ function renderTimeLine(dataobj){
 
     timeSvgYaxis.transition().call(yAxisTimeLine);
     timeSvgXaxis.transition().call(xAxisTimeLine);
+
+    var legendWidth = 10;
+
+    timeLegendRect = timeLineLegendSvg.selectAll('.TimeLineLegendRect').data(dataobj.time_legend_data);
+
+    timeLegendRect.exit().remove();
+    timeLegendRect
+        .enter()
+        .append('rect')
+        .attr('class', 'TimeLineLegendRect');
+    timeLegendRect.transition();
+
+    timeLegendText = timeLineLegendSvg.selectAll('.TimeLineLegendText').data(dataobj.time_legend_data);
+
+    timeLegendText.exit().remove();
+    timeLegendText
+        .enter()
+        .append('text')
+        .attr('class', 'TimeLineLegendText');
+    timeLegendText.transition();
+
+    timeLegendRect
+        .attr("y", function(d, i) { return 2 * legendWidth * i; })
+        .attr("x", 0)
+        .attr("width", legendWidth)
+        .attr("height", legendWidth)
+        .style("fill", function(d) { return d.colorfill; })
+    
+    timeLegendText
+        .text(function(d) { return d.key; })
+        .attr("y", function(d, i) { return 9 + 2*legendWidth * i; })
+        .attr("x", 5 + legendWidth);
 
 }
 
@@ -947,7 +992,7 @@ function renderHeatMap(dataobj) {
     var heatMapWidth = heatMapData[0].length * cellSize;
     var heatMapHeight = data.length * cellSize;
 
-    console.log(xAxisData);
+    // console.log(xAxisData);
 
     // X-Axis Scale
     xScaleHeatMap
