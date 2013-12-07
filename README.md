@@ -12,4 +12,19 @@ CS 7450: Visualization of a Github organization.
 ### Dependencies
 
 - D3.js
-- Javascript
+- Bootstrap
+- Jquery
+- Colorbrewer
+- Moment.js
+- Colorbox
+
+### Link
+[http://sourabhbajaj.com/projects/GithubVisualizer/](http://sourabhbajaj.com/projects/GithubVisualizer/)
+
+### Feedback
+
+Please post issues to give your feedback about the project. 
+
+### License
+
+MIT
