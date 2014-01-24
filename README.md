@@ -28,3 +28,7 @@ Please post issues to give your feedback about the project.
 ### License
 
 MIT
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sb2nov/githubvisualizer/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
