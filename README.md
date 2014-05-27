@@ -19,7 +19,7 @@ CS 7450: Visualization of a Github organization.
 - Colorbox
 
 ### Link
-[http://sourabhbajaj.com/projects/GithubVisualizer/](http://sourabhbajaj.com/projects/GithubVisualizer/)
+[http://sourabhbajaj.com/GithubVisualizer/](http://sourabhbajaj.com/GithubVisualizer/)
 
 ### Feedback
 
